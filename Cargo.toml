@@ -1,17 +1,19 @@
 [package]
 name = "oxiguitar-nam-plugin"
 description = "The OxiGuitar NAM plugin: amp models (Neural Amp Modeler captures) and cabinet impulse responses on guitar and bass tracks, set in the track dialog."
-version.workspace = true
-edition.workspace = true
-rust-version.workspace = true
-license.workspace = true
-authors.workspace = true
-repository.workspace = true
+version = "0.1.0"
+edition = "2024"
+# Rust from rustup, raised only when something needs it (CONTRIBUTING.md).
+rust-version = "1.99"
+license = "GPL-3.0-or-later"
+authors = ["Mateus Rocha de Paula", "The OxiGuitar contributors"]
+repository = "https://github.com/mateusrdp/oxiguitar-nam"
+homepage = "https://github.com/mateusrdp/oxiguitar-nam"
 publish = false
 
 [lib]
 # An ordinary library for tests, and nam.oxp when built with
-# `--features oxp --crate-type cdylib` (scripts/build-plugins.sh); with
+# `--features oxp --crate-type cdylib` (build-oxp.sh); with
 # `x86-64-v3` too, and RUSTFLAGS="-C target-cpu=x86-64-v3", it is
 # nam-x86-64-v3.oxp, the build for Linux on processors with AVX2 and FMA.
 crate-type = ["lib"]
@@ -25,9 +27,12 @@ oxp = []
 x86-64-v3 = ["dep:NeuralAmpModeler-rs"]
 
 [dependencies]
-oxiguitar-plugin.workspace = true
-nam-rs.workspace = true
-rustfft.workspace = true
+# The SDK, from OxiGuitar's repository at the tag of the release this is
+# built for: v0.11.0 has interface 1.4, frozen. Nothing of OxiGuitar's is on
+# crates.io.
+oxiguitar-plugin = { git = "https://github.com/mateusrdp/oxiguitar", tag = "v0.11.0" }
+nam-rs = "0.4.0"
+rustfft = "6.4.1"
 
 # Linux on x86_64 only (Windows and macOS can't build it). The feature also
 # needs RUSTFLAGS="-C target-cpu=x86-64-v3": without it the library's build
@@ -36,7 +41,7 @@ rustfft.workspace = true
 # names no processor features so that the licence and advisory tools
 # (cargo-about, cargo-deny), which don't know the build's, still see it.
 [target.'cfg(all(target_os = "linux", target_env = "gnu", target_arch = "x86_64"))'.dependencies]
-NeuralAmpModeler-rs = { workspace = true, optional = true }
+NeuralAmpModeler-rs = { version = "1.0.1", default-features = false, optional = true }
 
 # Plugins deny `unsafe` rather than forbid it: `export_plugin!` allows it on
 # the two attributes it generates, and nowhere else.
@@ -50,3 +55,19 @@ unreachable_pub = "warn"
 all = { level = "warn", priority = -1 }
 dbg_macro = "warn"
 todo = "warn"
+
+[dev-dependencies]
+# tests/host.rs builds the .oxp file and checks it through OxiGuitar's own
+# plugin host, as the app would load it.
+oxiguitar-plugin-test = { git = "https://github.com/mateusrdp/oxiguitar", tag = "v0.11.0" }
+oxiguitar-host = { git = "https://github.com/mateusrdp/oxiguitar", tag = "v0.11.0" }
+
+[profile.release]
+# Small files. Keep the default `panic = "unwind"`: a panic is then caught
+# and reported as an error instead of closing OxiGuitar.
+lto = "thin"
+codegen-units = 1
+strip = "symbols"
+
+# Its own workspace, wherever the folder is copied.
+[workspace]
