@@ -29,6 +29,10 @@ env:
   # Debian/Ubuntu packages the build needs on Linux, space-separated
   # (e.g. libasound2-dev). Empty: none.
   APT_PACKAGES: ""
+  # The MIDI plugin this one needs, built from this tag or branch of
+  # mateusrdp/oxiguitar-midi for the tests (scripts/midi.sh). Raised to the
+  # tag of the release this one needs once it exists.
+  MIDI_REF: develop
 
 jobs:
   rust:
@@ -37,7 +41,7 @@ jobs:
     outputs:
       present: ${{ steps.look.outputs.present }}
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
       - id: look
         run: |
           if [ -f Cargo.toml ]; then echo "present=true"; else echo "present=false"; fi >> "$GITHUB_OUTPUT"
@@ -48,7 +52,7 @@ jobs:
     if: needs.rust.outputs.present == 'true'
     runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
       - uses: dtolnay/rust-toolchain@stable
         with:
           components: rustfmt
@@ -60,7 +64,7 @@ jobs:
     if: needs.rust.outputs.present == 'true'
     runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
       # Lints run on the minimum supported Rust, so CI and contributors'
       # machines agree and a new upstream lint cannot turn CI red overnight.
       - uses: dtolnay/rust-toolchain@master
@@ -71,10 +75,12 @@ jobs:
       - if: env.APT_PACKAGES != ''
         run: sudo apt-get update && sudo apt-get install -y --no-install-recommends $APT_PACKAGES
         timeout-minutes: 15
+      # The feature x86-64-v3 builds only with RUSTFLAGS="-C target-cpu=x86-64-v3"
+      # (the "NAM for x86-64-v3" job lints it), so not --all-features.
       - name: Clippy
         run: |
           set -o pipefail
-          cargo clippy --workspace --all-targets --all-features --locked \
+          cargo clippy --workspace --all-targets --features oxp --locked \
             --message-format=short -- -D warnings 2>&1 \
             | sed -E 's/^([^ :]+):([0-9]+):([0-9]+): (error|warning)(\[[^]]*\])?: (.*)$/::error file=\1,line=\2,col=\3::\6\n&/'
       - name: Docs
@@ -101,7 +107,7 @@ jobs:
           - { name: Windows ARM64, os: windows-11-arm, toolchain: stable }
           - { name: macOS, os: macos-15, toolchain: stable }
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
       - uses: dtolnay/rust-toolchain@master
         with:
           toolchain: ${{ matrix.toolchain == 'msrv' && env.MSRV || matrix.toolchain }}
@@ -111,6 +117,9 @@ jobs:
       - if: runner.os == 'Linux' && env.APT_PACKAGES != ''
         run: sudo apt-get update && sudo apt-get install -y --no-install-recommends $APT_PACKAGES
         timeout-minutes: 15
+      - name: The MIDI plugin this one needs
+        shell: bash
+        run: echo "OXIGUITAR_MIDI_OXP=$(scripts/midi.sh "$MIDI_REF")" >> "$GITHUB_ENV"
       # Failing tests also become an annotation, so they can be read without
       # downloading the job log. Bash on every runner, Windows included.
       - name: cargo test
@@ -137,18 +146,62 @@ jobs:
     if: needs.rust.outputs.present == 'true'
     runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
       - uses: EmbarkStudios/cargo-deny-action@v2
         with:
           command: check
           arguments: --all-features
+
+  # The build for Linux on x86-64-v3 processors (nam-VERSION-linux-x86_64-v3.oxp:
+  # NeuralAmpModeler-rs, built with RUSTFLAGS="-C target-cpu=x86-64-v3"), which
+  # the other jobs never build with its library: clippy on that code; the
+  # agreement tests (its model and cabinet play what nam-rs and our
+  # convolution play, the cabinet a 64-frame partition later); and the file
+  # build-oxp.sh makes, through the contract suite and the real-time checks,
+  # chosen by the host over nam.oxp. GitHub's x86_64 runners have AVX2 and FMA.
+  nam-x86-64-v3:
+    name: NAM for x86-64-v3
+    runs-on: ubuntu-24.04
+    env:
+      CARGO_TERM_COLOR: never
+    steps:
+      - uses: actions/checkout@v5
+      - uses: dtolnay/rust-toolchain@master
+        with:
+          toolchain: ${{ env.MSRV }}
+          components: clippy
+      - uses: Swatinem/rust-cache@v2
+        with:
+          key: x86-64-v3
+      - name: The processor has the features
+        run: |
+          for f in avx avx2 bmi1 bmi2 f16c fma abm movbe; do
+            grep -qw "$f" /proc/cpuinfo || { echo "::error::this runner's processor lacks $f"; exit 1; }
+          done
+      - name: Clippy, the x86-64-v3 build
+        env:
+          RUSTFLAGS: -C target-cpu=x86-64-v3
+        run: >-
+          cargo clippy --features x86-64-v3 --all-targets --locked
+          --target-dir target/v3 -- -D warnings
+      - name: The MIDI plugin this one needs
+        run: echo "OXIGUITAR_MIDI_OXP=$(scripts/midi.sh "$MIDI_REF")" >> "$GITHUB_ENV"
+      - name: The two builds sound the same
+        env:
+          RUSTFLAGS: -C target-cpu=x86-64-v3
+        run: cargo test --features x86-64-v3 --locked --target-dir target/v3 -- --nocapture
+      - run: ./build-oxp.sh
+      - name: The file through the contract suite
+        run: |
+          export OXIGUITAR_TEST_NAM_X86_64_V3="$(ls "$PWD"/dist/nam-*-linux-x86_64-v3.oxp)"
+          cargo test --locked --test host the_nam_build_for_x86_64_v3 -- --nocapture
 
   dco:
     name: Sign-off (DCO)
     if: github.event_name == 'pull_request'
     runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
         with:
           fetch-depth: 0
       - run: >-
@@ -159,7 +212,7 @@ jobs:
   ci-success:
     name: ci-success
     if: always()
-    needs: [rust, fmt, lint, test, deny, dco]
+    needs: [rust, fmt, lint, test, deny, nam-x86-64-v3, dco]
     runs-on: ubuntu-24.04
     steps:
       - name: Every job passed

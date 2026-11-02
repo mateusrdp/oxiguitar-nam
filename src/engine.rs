@@ -181,7 +181,7 @@ mod tests {
 
     fn fixture(name: &str) -> std::path::PathBuf {
         Path::new(env!("CARGO_MANIFEST_DIR"))
-            .join("../../fixtures/nam")
+            .join("fixtures/nam")
             .join(name)
     }
 
