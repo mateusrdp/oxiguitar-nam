@@ -19,11 +19,11 @@ permissions:
 
 jobs:
   publish:
-    uses: mateusrdp/oxiguitar/.github/workflows/plugin-publish.yml@99722a630b8bf1d886f74281e092c2399cd38a18
+    uses: mateusrdp/oxiguitar/.github/workflows/plugin-publish.yml@v0.12.1
     with:
       name: nam
       tag: ${{ inputs.tag }}
       # Not submitted to winget yet (no third parties for now): put the id back to turn it on.
       # winget-id: mateusrdp.OxiGuitar.NAM
-      tools-ref: 99722a630b8bf1d886f74281e092c2399cd38a18
+      tools-ref: v0.12.1
     secrets: inherit

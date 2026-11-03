@@ -6,6 +6,14 @@ follows [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+### Added
+
+- While a track's amp is on, the section Amp (NAM) says under the model how to feed it a clean guitar: set the track's Sound (the MIDI plugin's section) to "Like clean guitars" (mateusrdp/oxiguitar#152). A NAM capture expects a clean guitar; a track whose General MIDI program is overdriven or distortion would otherwise go into the amp already distorted.
+
+### Changed
+
+- The release and publish workflows call oxiguitar's at v0.12.1, whose install check passes on Fedora's rpm (which now refuses unsigned packages without `--nosignature`).
+
 ## [0.1.0] - 2026-11-02
 
 First release in a repository of its own (mateusrdp/oxiguitar#165). The
