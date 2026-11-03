@@ -27,7 +27,7 @@ concurrency:
 
 jobs:
   release:
-    uses: mateusrdp/oxiguitar/.github/workflows/plugin-release.yml@99722a630b8bf1d886f74281e092c2399cd38a18
+    uses: mateusrdp/oxiguitar/.github/workflows/plugin-release.yml@v0.12.1
     with:
       name: nam
       title: "NAM (amp models)"
@@ -36,6 +36,6 @@ jobs:
       test: false
       depends-deb: "oxiguitar-midi (>= 0.1.0)"
       depends-rpm: "oxiguitar-midi >= 0.1.0"
-      tools-ref: 99722a630b8bf1d886f74281e092c2399cd38a18
+      tools-ref: v0.12.1
     permissions:
       contents: write
