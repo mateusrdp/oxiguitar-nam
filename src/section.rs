@@ -2,7 +2,12 @@
 // Copyright (C) 2026 Mateus Rocha de Paula and the OxiGuitar contributors
 
 //! The track dialog's section "Amp (NAM)", for guitars and basses: NAM on
-//! or off, the model, the cabinet, and the levels before and after.
+//! or off, the model, the cabinet, and the levels before and after. While
+//! the amp is on, a hint under the model says how to feed it a clean
+//! guitar (mateusrdp/oxiguitar#152): the MIDI plugin's section Sound,
+//! "Like clean guitars". The section can't see that section's settings
+//! (each plugin gets only its own), so the hint says what to do rather
+//! than checking it.
 
 use oxiguitar_plugin::serde_json::{Map, Value};
 use oxiguitar_plugin::{Error, Host, Row, TabContent, TabEvent, TrackInfo, TrackSection, Widget};
@@ -47,6 +52,13 @@ fn models(found: &Found, track: &Track) -> (Vec<String>, u32, usize) {
     options.extend(found.models.iter().cloned());
     (options, picked as u32, start)
 }
+
+/// The hint shown under the model while the amp is on, a line per row
+/// (labels don't wrap): the MIDI plugin's section and choice, by name.
+pub(crate) const CLEAN_HINT: [&str; 2] = [
+    "For a clean guitar into the amp, set this",
+    "track's Sound to \"Like clean guitars\".",
+];
 
 /// The cabinet choice's lines and what each picks.
 fn cabinets(found: &Found) -> Vec<(String, Cabinet)> {
@@ -128,6 +140,15 @@ impl TrackSection for Section {
                     },
                 ],
             },
+        ];
+        if t.on {
+            for line in CLEAN_HINT {
+                rows.push(Row {
+                    widgets: vec![label(line, true)],
+                });
+            }
+        }
+        rows.extend([
             Row {
                 widgets: vec![
                     label("Cabinet", false),
@@ -141,7 +162,7 @@ impl TrackSection for Section {
             },
             level_row("Input", "input", t.input),
             level_row("Output", "output", t.output),
-        ];
+        ]);
         if found.models.is_empty() {
             rows.push(Row {
                 widgets: vec![label("No amp models found yet.", false)],
@@ -239,5 +260,54 @@ mod tests {
         let cabs = cabinets(&found);
         assert_eq!(cabs.len(), 2 + crate::BUILT_IN.len() + 1);
         assert_eq!(cabs.last().unwrap().1, Cabinet::File("4x12.wav".into()));
+    }
+
+    fn texts(content: &TabContent) -> Vec<String> {
+        content
+            .rows
+            .iter()
+            .flat_map(|r| &r.widgets)
+            .filter_map(|w| match w {
+                Widget::Label { text, .. } => Some(text.clone()),
+                _ => None,
+            })
+            .collect()
+    }
+
+    /// While the amp is on, the hint stands right under the model;
+    /// off, it isn't shown.
+    #[test]
+    fn the_clean_guitar_hint_shows_under_the_model_while_the_amp_is_on() {
+        use oxiguitar_plugin::InstrumentClass;
+        use oxiguitar_plugin::serde_json::json;
+
+        let section = Section::new(Host::detached());
+        let track = TrackInfo {
+            index: 0,
+            name: "Rhythm".into(),
+            class: InstrumentClass::Fretted,
+        };
+        let mut settings = Map::new();
+        let off = texts(&section.content(&track, &settings));
+        assert!(
+            !off.iter().any(|t| t.contains("Like clean guitars")),
+            "{off:?}"
+        );
+        settings.insert("on".into(), json!(true));
+        let content = section.content(&track, &settings);
+        let model = content
+            .rows
+            .iter()
+            .position(
+                |r| matches!(&r.widgets[..], [Widget::Label { text, .. }, ..] if text == "Model"),
+            )
+            .unwrap();
+        for (k, line) in CLEAN_HINT.iter().enumerate() {
+            assert!(matches!(
+                &content.rows[model + 1 + k].widgets[..],
+                [Widget::Label { text, muted: true }] if text == line
+            ));
+        }
+        assert!(CLEAN_HINT.iter().all(|l| l.chars().count() <= 45));
     }
 }
