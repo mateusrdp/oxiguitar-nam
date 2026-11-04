@@ -6,6 +6,8 @@ follows [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+## [0.2.0] - 2026-11-04
+
 ### Added
 
 - While a track's amp is on, the section Amp (NAM) says under the model how to feed it a clean guitar: set the track's Sound (the MIDI plugin's section) to "Like clean guitars" (mateusrdp/oxiguitar#152). A NAM capture expects a clean guitar; a track whose General MIDI program is overdriven or distortion would otherwise go into the amp already distorted.
