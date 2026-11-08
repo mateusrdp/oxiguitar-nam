@@ -6,6 +6,15 @@ follows [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+### Changed
+
+- **Input and Output follow the track's section while the song plays**
+  (mateusrdp/oxiguitar#232): moving either slider changes the sound at
+  once, the level gliding to the new one in about 10 ms so nothing clicks.
+  Turning the amp on or off, or another model or cabinet, loads files, so
+  it is heard when the song next starts, as before. Needs OxiGuitar 0.14
+  (plugin interface 1.5): the SDK is the tag v0.14.0.
+
 ## [0.2.0] - 2026-11-04
 
 ### Added

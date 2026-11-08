@@ -28,9 +28,10 @@ x86-64-v3 = ["dep:NeuralAmpModeler-rs"]
 
 [dependencies]
 # The SDK, from OxiGuitar's repository at the tag of the release this is
-# built for: v0.11.0 has interface 1.4, frozen. Nothing of OxiGuitar's is on
-# crates.io.
-oxiguitar-plugin = { git = "https://github.com/mateusrdp/oxiguitar", tag = "v0.11.0" }
+# built for: v0.14.0 has interface 1.5, frozen (until that tag exists, the
+# commit of mateusrdp/oxiguitar#242 it will hold). Nothing of OxiGuitar's is
+# on crates.io.
+oxiguitar-plugin = { git = "https://github.com/mateusrdp/oxiguitar", rev = "0bb1a10cc3cf55b0f5e269a0e47f9d4c5b7225c0" }
 nam-rs = "0.4.0"
 rustfft = "6.4.1"
 
@@ -59,8 +60,8 @@ todo = "warn"
 [dev-dependencies]
 # tests/host.rs builds the .oxp file and checks it through OxiGuitar's own
 # plugin host, as the app would load it.
-oxiguitar-plugin-test = { git = "https://github.com/mateusrdp/oxiguitar", tag = "v0.11.0" }
-oxiguitar-host = { git = "https://github.com/mateusrdp/oxiguitar", tag = "v0.11.0" }
+oxiguitar-plugin-test = { git = "https://github.com/mateusrdp/oxiguitar", rev = "0bb1a10cc3cf55b0f5e269a0e47f9d4c5b7225c0" }
+oxiguitar-host = { git = "https://github.com/mateusrdp/oxiguitar", rev = "0bb1a10cc3cf55b0f5e269a0e47f9d4c5b7225c0" }
 
 [profile.release]
 # Small files. Keep the default `panic = "unwind"`: a panic is then caught
