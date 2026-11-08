@@ -1,0 +1,1455 @@
+{
+  "version": "1.0.0",
+  "gitCommitHash": "17457985e75d9f7ae9c74e15160f25e51401ae9d",
+  "generatedAt": "2026-11-07T17:15:51.200Z",
+  "files": {
+    ".github/dependabot.yml": {
+      "filePath": ".github/dependabot.yml",
+      "contentHash": "1d177c4b52c244956069a6269ed50492bb649dcaebb1a1b1ef9d610835eeb2d3",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 25,
+      "hasStructuralAnalysis": false
+    },
+    ".github/pull_request_template.md": {
+      "filePath": ".github/pull_request_template.md",
+      "contentHash": "2725627b502bd9a41e49fa5324897c4c507ae2dc69a726057c974456140b6213",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 16,
+      "hasStructuralAnalysis": false
+    },
+    ".github/workflows/ci.yml": {
+      "filePath": ".github/workflows/ci.yml",
+      "contentHash": "6221a4a5d79ed73d19e34297021c03347b4395a728efc7e72ce10f4fecd01c68",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 228,
+      "hasStructuralAnalysis": false
+    },
+    ".github/workflows/publish.yml": {
+      "filePath": ".github/workflows/publish.yml",
+      "contentHash": "3ec999875a1ba0f9d0cadeacefd4276c43d028616150cb5116d2768b543aee61",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 29,
+      "hasStructuralAnalysis": false
+    },
+    ".github/workflows/release.yml": {
+      "filePath": ".github/workflows/release.yml",
+      "contentHash": "19cf1280804fc38fe108aed1a3aaec9c494512ac981c125f4c47909822a54e72",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 41,
+      "hasStructuralAnalysis": false
+    },
+    "CHANGELOG.md": {
+      "filePath": "CHANGELOG.md",
+      "contentHash": "01e94a268415ae49bc71d0ed8f64d31a380e4f22f5362e950ecd181d60c371bd",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 37,
+      "hasStructuralAnalysis": false
+    },
+    "CLAUDE.md": {
+      "filePath": "CLAUDE.md",
+      "contentHash": "023306e3fe21b3c23c2e0e82903ada2ef51f2e5e2989bda1acfa5881c043eb93",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 34,
+      "hasStructuralAnalysis": false
+    },
+    "CONTRIBUTING.md": {
+      "filePath": "CONTRIBUTING.md",
+      "contentHash": "ace4951f596a42e91b4af7ff67b4cc7de7cd6e57464f801b66338ab7bcdf54e1",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 43,
+      "hasStructuralAnalysis": false
+    },
+    "Cargo.toml": {
+      "filePath": "Cargo.toml",
+      "contentHash": "b8845fa081470d50b242d491558df2c8d68d9cf16ef42cff7a7889467906ac5f",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 74,
+      "hasStructuralAnalysis": false
+    },
+    "README.md": {
+      "filePath": "README.md",
+      "contentHash": "aff43293129344bcb88286ff69a6ccbc3fd37dcb6ad3656ec651e1945bc5b261",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 36,
+      "hasStructuralAnalysis": false
+    },
+    "build-oxp.sh": {
+      "filePath": "build-oxp.sh",
+      "contentHash": "3f1284322610ac3ea3a88777cb3ad29ecb02c2bed33ad897d05889ba3e391191",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 71,
+      "hasStructuralAnalysis": false
+    },
+    "build.rs": {
+      "filePath": "build.rs",
+      "contentHash": "d0442748b93f852fcc95e6701bc4eebb7493dba966a7a0038cfa534a4e815493",
+      "functions": [
+        {
+          "name": "main",
+          "owner": "",
+          "params": [],
+          "exported": false,
+          "lineCount": 17
+        }
+      ],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 29,
+      "hasStructuralAnalysis": true
+    },
+    "clippy.toml": {
+      "filePath": "clippy.toml",
+      "contentHash": "f47870687bec93d43189402220733f9f496cb22ec33914d2c35c4dc65c3ffa11",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 6,
+      "hasStructuralAnalysis": false
+    },
+    "deny.toml": {
+      "filePath": "deny.toml",
+      "contentHash": "e3533f4749ad3b5cc1868bf4a1ac96a33af22c34c142249de95883fda9e27bd7",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 65,
+      "hasStructuralAnalysis": false
+    },
+    "fixtures/nam/README.md": {
+      "filePath": "fixtures/nam/README.md",
+      "contentHash": "93d3677b645bbd01494a724cb524344d3486992e99d28c71e98d31aa98ba0362",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 12,
+      "hasStructuralAnalysis": false
+    },
+    "fixtures/nam/lstm.nam": {
+      "filePath": "fixtures/nam/lstm.nam",
+      "contentHash": "df9f78c49f49c2bb32411df47e3f53746075adb206b92d017e06379d1e56234a",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 1,
+      "hasStructuralAnalysis": false
+    },
+    "fixtures/nam/wavenet.nam": {
+      "filePath": "fixtures/nam/wavenet.nam",
+      "contentHash": "66bda2b379289eff079c0755588bc9a92760654d9cc9af1b97cf30d0e92b167d",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 1,
+      "hasStructuralAnalysis": false
+    },
+    "irs/README.md": {
+      "filePath": "irs/README.md",
+      "contentHash": "83a8b7b9fe24c4df79ff7d7381a4d8dbcc4b8f973ee52007e7120607e2d2ca5b",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 20,
+      "hasStructuralAnalysis": false
+    },
+    "irs/engl-retro-tube.wav": {
+      "filePath": "irs/engl-retro-tube.wav",
+      "contentHash": "23668005771e3289b76812fa27366f94e15e14e8a224276d7c9ee62718ae42a0",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 98,
+      "hasStructuralAnalysis": false
+    },
+    "irs/evh-5150-iii.wav": {
+      "filePath": "irs/evh-5150-iii.wav",
+      "contentHash": "4729e01cf8d82d0a45cf81141ac8aee560a7455652d574655940037ee3aa5112",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 47,
+      "hasStructuralAnalysis": false
+    },
+    "irs/marshall-jmp-2203-mod.wav": {
+      "filePath": "irs/marshall-jmp-2203-mod.wav",
+      "contentHash": "ba2b939668e5bc235f8d5435eb04156d5b27444227ea42357e9b390812f9fb81",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 84,
+      "hasStructuralAnalysis": false
+    },
+    "irs/mesa-boogie-mark-v.wav": {
+      "filePath": "irs/mesa-boogie-mark-v.wav",
+      "contentHash": "4851079914c67119b71b6008358c5262bc0f2ed46c7862e81bc57ffc82a09999",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 34,
+      "hasStructuralAnalysis": false
+    },
+    "manifest-x86-64-v3.json": {
+      "filePath": "manifest-x86-64-v3.json",
+      "contentHash": "26b0056ff13708c61a4cd65725d7182717244c42e3215e82d4aa16aeceaf07cd",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 66,
+      "hasStructuralAnalysis": false
+    },
+    "manifest.json": {
+      "filePath": "manifest.json",
+      "contentHash": "0c39d90c4bf57c47e3c34b238dea80fc9c0ebffaca68650a42a49d530edfdd40",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 19,
+      "hasStructuralAnalysis": false
+    },
+    "rustfmt.toml": {
+      "filePath": "rustfmt.toml",
+      "contentHash": "d461d42d0e324e3bd489a46e068794c0358a9f542c90495ed15ee2e581cb66ad",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 4,
+      "hasStructuralAnalysis": false
+    },
+    "scripts/check-dco.sh": {
+      "filePath": "scripts/check-dco.sh",
+      "contentHash": "09c2fc940f2e61ebbfe8f266bcbcb8c1aafd454ea078a1288566a0465a27570d",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 71,
+      "hasStructuralAnalysis": false
+    },
+    "scripts/midi.sh": {
+      "filePath": "scripts/midi.sh",
+      "contentHash": "669a09672e30cf1e427e4436641fef53f8a71e496922b1a2961f6d3b5961a6e3",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 67,
+      "hasStructuralAnalysis": false
+    },
+    "src/convolve.rs": {
+      "filePath": "src/convolve.rs",
+      "contentHash": "16118bea331abe6a5cc8a1988f6fb370c73357efc031051ac3994863ba2475b7",
+      "functions": [
+        {
+          "name": "fmt",
+          "owner": null,
+          "params": [
+            "f"
+          ],
+          "returnType": "std::fmt::Result",
+          "exported": false,
+          "lineCount": 5
+        },
+        {
+          "name": "new",
+          "owner": "Convolver",
+          "params": [
+            "taps"
+          ],
+          "returnType": "Convolver",
+          "exported": true,
+          "lineCount": 48
+        },
+        {
+          "name": "process",
+          "owner": "Convolver",
+          "params": [
+            "io"
+          ],
+          "exported": true,
+          "lineCount": 20
+        },
+        {
+          "name": "next_tail",
+          "owner": "Convolver",
+          "params": [],
+          "exported": false,
+          "lineCount": 31
+        },
+        {
+          "name": "normalise",
+          "owner": "",
+          "params": [
+            "taps",
+            "rate"
+          ],
+          "returnType": "Vec<f32>",
+          "exported": true,
+          "lineCount": 11
+        }
+      ],
+      "classes": [
+        {
+          "name": "Convolver",
+          "methods": [
+            "fmt",
+            "new",
+            "process",
+            "next_tail"
+          ],
+          "properties": [
+            "head",
+            "line",
+            "at",
+            "parts",
+            "spectra",
+            "newest",
+            "block",
+            "before",
+            "pos",
+            "tail",
+            "forward",
+            "inverse",
+            "work",
+            "sum",
+            "scratch"
+          ],
+          "exported": true,
+          "lineCount": 27
+        }
+      ],
+      "imports": [
+        {
+          "source": "std::sync",
+          "specifiers": [
+            "Arc"
+          ]
+        },
+        {
+          "source": "rustfft::num_complex",
+          "specifiers": [
+            "Complex32"
+          ]
+        },
+        {
+          "source": "rustfft",
+          "specifiers": [
+            "Fft",
+            "FftPlanner"
+          ]
+        }
+      ],
+      "exports": [
+        "Convolver",
+        "new",
+        "process",
+        "normalise"
+      ],
+      "totalLines": 246,
+      "hasStructuralAnalysis": true
+    },
+    "src/engine.rs": {
+      "filePath": "src/engine.rs",
+      "contentHash": "2b442fed6824bdf510d10e0092941049c85d71fc61a1446d5d16e8da62395326",
+      "functions": [
+        {
+          "name": "new",
+          "owner": "Model",
+          "params": [
+            "_path",
+            "file"
+          ],
+          "returnType": "Result<Model, String>",
+          "exported": true,
+          "lineCount": 8
+        },
+        {
+          "name": "new",
+          "owner": "Model",
+          "params": [
+            "path",
+            "_file"
+          ],
+          "returnType": "Result<Model, String>",
+          "exported": true,
+          "lineCount": 22
+        },
+        {
+          "name": "process",
+          "owner": "Model",
+          "params": [
+            "io"
+          ],
+          "exported": true,
+          "lineCount": 13
+        },
+        {
+          "name": "new",
+          "owner": "Cabinet",
+          "params": [
+            "taps"
+          ],
+          "returnType": "Result<Cabinet, String>",
+          "exported": true,
+          "lineCount": 20
+        },
+        {
+          "name": "process",
+          "owner": "Cabinet",
+          "params": [
+            "io"
+          ],
+          "exported": true,
+          "lineCount": 20
+        },
+        {
+          "name": "latency",
+          "owner": "Cabinet",
+          "params": [],
+          "returnType": "usize",
+          "exported": true,
+          "lineCount": 6
+        }
+      ],
+      "classes": [
+        {
+          "name": "Model",
+          "methods": [
+            "new",
+            "new",
+            "process"
+          ],
+          "properties": [
+            "model",
+            "model",
+            "scratch"
+          ],
+          "exported": true,
+          "lineCount": 10
+        },
+        {
+          "name": "Cabinet",
+          "methods": [
+            "new",
+            "process",
+            "latency"
+          ],
+          "properties": [
+            "convolver",
+            "adapter",
+            "input",
+            "output",
+            "at"
+          ],
+          "exported": true,
+          "lineCount": 16
+        }
+      ],
+      "imports": [
+        {
+          "source": "std::path",
+          "specifiers": [
+            "Path"
+          ]
+        }
+      ],
+      "exports": [
+        "Model",
+        "new",
+        "new",
+        "process",
+        "Cabinet",
+        "new",
+        "process",
+        "latency"
+      ],
+      "totalLines": 312,
+      "hasStructuralAnalysis": true
+    },
+    "src/files.rs": {
+      "filePath": "src/files.rs",
+      "contentHash": "2494434b3b57b5c8485f58293252d4f272e925ca1fbadb1843a23c0a31a1086a",
+      "functions": [
+        {
+          "name": "find",
+          "owner": "",
+          "params": [
+            "folder"
+          ],
+          "returnType": "Found",
+          "exported": true,
+          "lineCount": 7
+        },
+        {
+          "name": "walk",
+          "owner": "",
+          "params": [
+            "root",
+            "dir",
+            "depth",
+            "found"
+          ],
+          "exported": false,
+          "lineCount": 26
+        },
+        {
+          "name": "inside",
+          "owner": "",
+          "params": [
+            "root",
+            "path"
+          ],
+          "returnType": "Option<String>",
+          "exported": false,
+          "lineCount": 5
+        },
+        {
+          "name": "resolve",
+          "owner": "",
+          "params": [
+            "folder",
+            "name"
+          ],
+          "returnType": "Option<PathBuf>",
+          "exported": true,
+          "lineCount": 7
+        }
+      ],
+      "classes": [
+        {
+          "name": "Found",
+          "methods": [],
+          "properties": [
+            "models",
+            "responses"
+          ],
+          "exported": true,
+          "lineCount": 6
+        }
+      ],
+      "imports": [
+        {
+          "source": "std::path",
+          "specifiers": [
+            "Component",
+            "Path",
+            "PathBuf"
+          ]
+        }
+      ],
+      "exports": [
+        "Found",
+        "find",
+        "resolve"
+      ],
+      "totalLines": 108,
+      "hasStructuralAnalysis": true
+    },
+    "src/lib.rs": {
+      "filePath": "src/lib.rs",
+      "contentHash": "31dd8605fb362397e1a86fcecdcbb0dde7d7ad0c03b606389891612c83092e78",
+      "functions": [
+        {
+          "name": "built_in_title",
+          "owner": "",
+          "params": [
+            "name"
+          ],
+          "returnType": "&'static str",
+          "exported": true,
+          "lineCount": 9
+        },
+        {
+          "name": "fmt",
+          "owner": null,
+          "params": [
+            "f"
+          ],
+          "returnType": "std::fmt::Result",
+          "exported": false,
+          "lineCount": 3
+        },
+        {
+          "name": "folder",
+          "owner": "",
+          "params": [
+            "host"
+          ],
+          "returnType": "Option<PathBuf>",
+          "exported": true,
+          "lineCount": 4
+        },
+        {
+          "name": "failed",
+          "owner": "",
+          "params": [
+            "message"
+          ],
+          "returnType": "Error",
+          "exported": false,
+          "lineCount": 3
+        },
+        {
+          "name": "decibels",
+          "owner": "",
+          "params": [
+            "db"
+          ],
+          "returnType": "f32",
+          "exported": false,
+          "lineCount": 3
+        },
+        {
+          "name": "model_file",
+          "owner": "NamPlugin",
+          "params": [
+            "path"
+          ],
+          "returnType": "Result<Arc<nam_rs::NamModel>, Error>",
+          "exported": false,
+          "lineCount": 23
+        },
+        {
+          "name": "advise_files",
+          "owner": "NamPlugin",
+          "params": [
+            "found",
+            "includes_cab"
+          ],
+          "exported": false,
+          "lineCount": 31
+        },
+        {
+          "name": "cabinet",
+          "owner": "NamPlugin",
+          "params": [
+            "track",
+            "includes_cab",
+            "nam",
+            "rate"
+          ],
+          "returnType": "Result<Option<Vec<f32>>, Error>",
+          "exported": false,
+          "lineCount": 34
+        },
+        {
+          "name": "start",
+          "owner": null,
+          "params": [
+            "host"
+          ],
+          "returnType": "Result<NamPlugin, Error>",
+          "exported": false,
+          "lineCount": 7
+        },
+        {
+          "name": "effect",
+          "owner": null,
+          "params": [
+            "id"
+          ],
+          "returnType": "Option<&dyn Effect>",
+          "exported": false,
+          "lineCount": 3
+        },
+        {
+          "name": "track_section",
+          "owner": null,
+          "params": [
+            "id"
+          ],
+          "returnType": "Option<&dyn TrackSection>",
+          "exported": false,
+          "lineCount": 3
+        },
+        {
+          "name": "prepare",
+          "owner": null,
+          "params": [
+            "prepare"
+          ],
+          "returnType": "Result<Box<dyn Processor>, Error>",
+          "exported": false,
+          "lineCount": 42
+        },
+        {
+          "name": "process",
+          "owner": null,
+          "params": [
+            "_left",
+            "_right"
+          ],
+          "exported": false,
+          "lineCount": 1
+        },
+        {
+          "name": "process",
+          "owner": null,
+          "params": [
+            "left",
+            "right"
+          ],
+          "exported": false,
+          "lineCount": 27
+        },
+        {
+          "name": "latency",
+          "owner": null,
+          "params": [],
+          "returnType": "u32",
+          "exported": false,
+          "lineCount": 9
+        }
+      ],
+      "classes": [
+        {
+          "name": "Loaded",
+          "methods": [],
+          "properties": [
+            "path",
+            "modified",
+            "file"
+          ],
+          "exported": false,
+          "lineCount": 5
+        },
+        {
+          "name": "NamPlugin",
+          "methods": [
+            "fmt",
+            "model_file",
+            "advise_files",
+            "cabinet",
+            "start",
+            "effect",
+            "track_section",
+            "prepare"
+          ],
+          "properties": [
+            "host",
+            "section",
+            "loaded"
+          ],
+          "exported": true,
+          "lineCount": 5
+        },
+        {
+          "name": "Through",
+          "methods": [
+            "process"
+          ],
+          "properties": [],
+          "exported": false,
+          "lineCount": 1
+        },
+        {
+          "name": "Amp",
+          "methods": [
+            "process",
+            "latency"
+          ],
+          "properties": [
+            "model",
+            "cabinet",
+            "input",
+            "output",
+            "mono"
+          ],
+          "exported": false,
+          "lineCount": 8
+        }
+      ],
+      "imports": [
+        {
+          "source": "std::path",
+          "specifiers": [
+            "Path",
+            "PathBuf"
+          ]
+        },
+        {
+          "source": "std::sync",
+          "specifiers": [
+            "Arc",
+            "Mutex"
+          ]
+        },
+        {
+          "source": "std::time",
+          "specifiers": [
+            "SystemTime"
+          ]
+        },
+        {
+          "source": "oxiguitar_plugin::audio",
+          "specifiers": [
+            "PrepareEffect"
+          ]
+        },
+        {
+          "source": "oxiguitar_plugin",
+          "specifiers": [
+            "Advice",
+            "Effect",
+            "Error",
+            "ErrorKind",
+            "Host",
+            "Link",
+            "Plugin",
+            "Processor",
+            "SharedFolder",
+            "TrackSection"
+          ]
+        },
+        {
+          "source": "settings",
+          "specifiers": [
+            "Cabinet",
+            "Track"
+          ]
+        }
+      ],
+      "exports": [
+        "built_in_title",
+        "NamPlugin",
+        "folder"
+      ],
+      "totalLines": 388,
+      "hasStructuralAnalysis": true
+    },
+    "src/resample.rs": {
+      "filePath": "src/resample.rs",
+      "contentHash": "426263572b0c0e6fdd9923a9a9b4c28ec16c8e27fe8f615394925263799d9e33",
+      "functions": [
+        {
+          "name": "bessel0",
+          "owner": "",
+          "params": [
+            "x"
+          ],
+          "returnType": "f64",
+          "exported": false,
+          "lineCount": 13
+        },
+        {
+          "name": "new",
+          "owner": "Kernel",
+          "params": [
+            "from",
+            "to"
+          ],
+          "returnType": "Kernel",
+          "exported": true,
+          "lineCount": 29
+        },
+        {
+          "name": "at",
+          "owner": "Kernel",
+          "params": [
+            "input",
+            "frac"
+          ],
+          "returnType": "f32",
+          "exported": false,
+          "lineCount": 12
+        },
+        {
+          "name": "convert",
+          "owner": "",
+          "params": [
+            "input",
+            "from",
+            "to"
+          ],
+          "returnType": "Vec<f32>",
+          "exported": true,
+          "lineCount": 20
+        },
+        {
+          "name": "new",
+          "owner": "Stream",
+          "params": [
+            "from",
+            "to",
+            "most"
+          ],
+          "returnType": "Stream",
+          "exported": true,
+          "lineCount": 12
+        },
+        {
+          "name": "process",
+          "owner": "Stream",
+          "params": [
+            "input",
+            "out"
+          ],
+          "returnType": "usize",
+          "exported": true,
+          "lineCount": 21
+        },
+        {
+          "name": "new",
+          "owner": "Converted",
+          "params": [
+            "ours",
+            "theirs",
+            "most"
+          ],
+          "returnType": "Converted",
+          "exported": true,
+          "lineCount": 20
+        },
+        {
+          "name": "latency",
+          "owner": "Converted",
+          "params": [],
+          "returnType": "usize",
+          "exported": true,
+          "lineCount": 3
+        },
+        {
+          "name": "process",
+          "owner": "Converted",
+          "params": [
+            "io",
+            "run"
+          ],
+          "exported": true,
+          "lineCount": 21
+        }
+      ],
+      "classes": [
+        {
+          "name": "Kernel",
+          "methods": [
+            "new",
+            "at"
+          ],
+          "properties": [
+            "table"
+          ],
+          "exported": false,
+          "lineCount": 3
+        },
+        {
+          "name": "Stream",
+          "methods": [
+            "new",
+            "process"
+          ],
+          "properties": [
+            "kernel",
+            "step",
+            "buf",
+            "pos"
+          ],
+          "exported": false,
+          "lineCount": 9
+        },
+        {
+          "name": "Converted",
+          "methods": [
+            "new",
+            "latency",
+            "process"
+          ],
+          "properties": [
+            "there",
+            "back",
+            "far",
+            "near",
+            "queue",
+            "head",
+            "len",
+            "latency"
+          ],
+          "exported": true,
+          "lineCount": 13
+        }
+      ],
+      "imports": [],
+      "exports": [
+        "convert",
+        "Converted",
+        "new",
+        "latency",
+        "process"
+      ],
+      "totalLines": 294,
+      "hasStructuralAnalysis": true
+    },
+    "src/section.rs": {
+      "filePath": "src/section.rs",
+      "contentHash": "864fdaafffaee1082f13fde60d65658ca363db5d71097a5e7b619e99c6f0d69b",
+      "functions": [
+        {
+          "name": "new",
+          "owner": "Section",
+          "params": [
+            "host"
+          ],
+          "returnType": "Section",
+          "exported": true,
+          "lineCount": 3
+        },
+        {
+          "name": "found",
+          "owner": "Section",
+          "params": [],
+          "returnType": "(Option<std::path::PathBuf>, Found)",
+          "exported": false,
+          "lineCount": 5
+        },
+        {
+          "name": "models",
+          "owner": "",
+          "params": [
+            "found",
+            "track"
+          ],
+          "returnType": "(Vec<String>, u32, usize)",
+          "exported": false,
+          "lineCount": 16
+        },
+        {
+          "name": "cabinets",
+          "owner": "",
+          "params": [
+            "found"
+          ],
+          "returnType": "Vec<(String, Cabinet)>",
+          "exported": false,
+          "lineCount": 16
+        },
+        {
+          "name": "label",
+          "owner": "",
+          "params": [
+            "text",
+            "muted"
+          ],
+          "returnType": "Widget",
+          "exported": false,
+          "lineCount": 6
+        },
+        {
+          "name": "level_row",
+          "owner": "",
+          "params": [
+            "title",
+            "id",
+            "value"
+          ],
+          "returnType": "Row",
+          "exported": false,
+          "lineCount": 15
+        },
+        {
+          "name": "content",
+          "owner": null,
+          "params": [
+            "_track",
+            "settings"
+          ],
+          "returnType": "TabContent",
+          "exported": false,
+          "lineCount": 86
+        },
+        {
+          "name": "on",
+          "owner": null,
+          "params": [
+            "_track",
+            "settings",
+            "widget",
+            "event"
+          ],
+          "returnType": "Result<(), Error>",
+          "exported": false,
+          "lineCount": 39
+        }
+      ],
+      "classes": [
+        {
+          "name": "Section",
+          "methods": [
+            "new",
+            "found",
+            "content",
+            "on"
+          ],
+          "properties": [
+            "host"
+          ],
+          "exported": true,
+          "lineCount": 3
+        }
+      ],
+      "imports": [
+        {
+          "source": "oxiguitar_plugin::serde_json",
+          "specifiers": [
+            "Map",
+            "Value"
+          ]
+        },
+        {
+          "source": "oxiguitar_plugin",
+          "specifiers": [
+            "Error",
+            "Host",
+            "Row",
+            "TabContent",
+            "TabEvent",
+            "TrackInfo",
+            "TrackSection",
+            "Widget"
+          ]
+        },
+        {
+          "source": "crate::files",
+          "specifiers": [
+            "self",
+            "Found"
+          ]
+        },
+        {
+          "source": "crate::settings",
+          "specifiers": [
+            "Cabinet",
+            "LEVELS",
+            "Track"
+          ]
+        }
+      ],
+      "exports": [
+        "Section",
+        "new"
+      ],
+      "totalLines": 314,
+      "hasStructuralAnalysis": true
+    },
+    "src/settings.rs": {
+      "filePath": "src/settings.rs",
+      "contentHash": "ac2e65894cac1fced0416eae6d29acb621bba748eb32bdc3094484b1011820dd",
+      "functions": [
+        {
+          "name": "default",
+          "owner": null,
+          "params": [],
+          "returnType": "Track",
+          "exported": false,
+          "lineCount": 9
+        },
+        {
+          "name": "level",
+          "owner": "",
+          "params": [
+            "v"
+          ],
+          "returnType": "f32",
+          "exported": false,
+          "lineCount": 4
+        },
+        {
+          "name": "from_map",
+          "owner": "Track",
+          "params": [
+            "map"
+          ],
+          "returnType": "Track",
+          "exported": true,
+          "lineCount": 19
+        },
+        {
+          "name": "from_text",
+          "owner": "Track",
+          "params": [
+            "text"
+          ],
+          "returnType": "Track",
+          "exported": true,
+          "lineCount": 6
+        },
+        {
+          "name": "write",
+          "owner": "Track",
+          "params": [
+            "map"
+          ],
+          "exported": true,
+          "lineCount": 15
+        }
+      ],
+      "classes": [
+        {
+          "name": "Cabinet",
+          "methods": [],
+          "properties": [
+            "Auto",
+            "None",
+            "BuiltIn",
+            "File"
+          ],
+          "exported": true,
+          "lineCount": 10
+        },
+        {
+          "name": "Track",
+          "methods": [
+            "default",
+            "from_map",
+            "from_text",
+            "write"
+          ],
+          "properties": [
+            "on",
+            "model",
+            "cabinet",
+            "input",
+            "output"
+          ],
+          "exported": true,
+          "lineCount": 10
+        }
+      ],
+      "imports": [
+        {
+          "source": "oxiguitar_plugin::serde_json",
+          "specifiers": [
+            "Map",
+            "Value",
+            "json"
+          ]
+        }
+      ],
+      "exports": [
+        "Cabinet",
+        "Track",
+        "from_map",
+        "from_text",
+        "write"
+      ],
+      "totalLines": 162,
+      "hasStructuralAnalysis": true
+    },
+    "src/wav.rs": {
+      "filePath": "src/wav.rs",
+      "contentHash": "2d2a310abea63143e14d1bb4e3b43a73faf2bf435a531761ec9b3651c743be57",
+      "functions": [
+        {
+          "name": "u16_at",
+          "owner": "",
+          "params": [
+            "d",
+            "at"
+          ],
+          "returnType": "Option<u16>",
+          "exported": false,
+          "lineCount": 3
+        },
+        {
+          "name": "u32_at",
+          "owner": "",
+          "params": [
+            "d",
+            "at"
+          ],
+          "returnType": "Option<u32>",
+          "exported": false,
+          "lineCount": 3
+        },
+        {
+          "name": "read",
+          "owner": "",
+          "params": [
+            "data"
+          ],
+          "returnType": "Result<Response, String>",
+          "exported": true,
+          "lineCount": 67
+        }
+      ],
+      "classes": [
+        {
+          "name": "Response",
+          "methods": [],
+          "properties": [
+            "rate",
+            "taps"
+          ],
+          "exported": true,
+          "lineCount": 6
+        }
+      ],
+      "imports": [],
+      "exports": [
+        "Response",
+        "read"
+      ],
+      "totalLines": 148,
+      "hasStructuralAnalysis": true
+    },
+    "tests/host.rs": {
+      "filePath": "tests/host.rs",
+      "contentHash": "e30259e9cf86f3d681c4f6826bf194b358ffb0b8a1daac6c720265ad7f105f83",
+      "functions": [
+        {
+          "name": "workspace",
+          "owner": "",
+          "params": [],
+          "returnType": "PathBuf",
+          "exported": false,
+          "lineCount": 3
+        },
+        {
+          "name": "ours",
+          "owner": "",
+          "params": [],
+          "returnType": "&'static Path",
+          "exported": false,
+          "lineCount": 7
+        },
+        {
+          "name": "midi_oxp",
+          "owner": "",
+          "params": [],
+          "returnType": "&'static Path",
+          "exported": false,
+          "lineCount": 15
+        },
+        {
+          "name": "nam_plugins",
+          "owner": "",
+          "params": [
+            "tag"
+          ],
+          "returnType": "(Plugins, PathBuf)",
+          "exported": false,
+          "lineCount": 9
+        },
+        {
+          "name": "nam_plugins_of",
+          "owner": "",
+          "params": [
+            "files",
+            "tag"
+          ],
+          "returnType": "(Plugins, PathBuf)",
+          "exported": false,
+          "lineCount": 33
+        },
+        {
+          "name": "our_nam_plugin_runs_a_model_in_real_time",
+          "owner": "",
+          "params": [],
+          "exported": false,
+          "lineCount": 20
+        },
+        {
+          "name": "our_nam_plugin_converts_the_rate_for_its_model",
+          "owner": "",
+          "params": [],
+          "exported": false,
+          "lineCount": 70
+        },
+        {
+          "name": "the_nam_build_for_x86_64_v3_processors_runs_in_real_time_and_is_chosen",
+          "owner": "",
+          "params": [],
+          "exported": false,
+          "lineCount": 74
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "std::path",
+          "specifiers": [
+            "Path",
+            "PathBuf"
+          ]
+        },
+        {
+          "source": "std::sync",
+          "specifiers": [
+            "Arc",
+            "OnceLock"
+          ]
+        },
+        {
+          "source": "oxiguitar_host::api::message",
+          "specifiers": [
+            "PrepareEffect",
+            "PreparedTrack",
+            "TrackInfo"
+          ]
+        },
+        {
+          "source": "oxiguitar_host",
+          "specifiers": [
+            "Plugins",
+            "SharedSettings",
+            "Unheard"
+          ]
+        },
+        {
+          "source": "oxiguitar_plugin_test",
+          "specifiers": [
+            "TEST_SET",
+            "check_with"
+          ]
+        }
+      ],
+      "exports": [],
+      "totalLines": 281,
+      "hasStructuralAnalysis": true
+    }
+  }
+}
