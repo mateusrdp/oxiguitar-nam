@@ -1,0 +1,11 @@
+{
+  "gitCommitHash": "17457985e75d9f7ae9c74e15160f25e51401ae9d",
+  "analyzedAt": "2026-11-07T16:26:36.712Z",
+  "totalNodes": 36,
+  "totalEdges": 52,
+  "totalLayers": 7,
+  "tourSteps": 8,
+  "languages": ["json", "markdown", "nam", "rust", "shell", "toml", "wav", "yaml"],
+  "frameworks": [],
+  "version": "1.0.0"
+}

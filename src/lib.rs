@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 // Copyright (C) 2026 Mateus Rocha de Paula and the OxiGuitar contributors
 
-//! OxiGuitar's NAM plugin (plugin interface 1.4; M4 slice 6,
+//! OxiGuitar's NAM plugin (plugin interface 1.5; M4 slice 6,
 //! docs/design/player.md): the effect `nam`, which plays a guitar or bass
 //! track through an amp model (a Neural Amp Modeler capture, `.nam`) and a
 //! cabinet impulse response, after its instrument; and the track dialog's
@@ -27,6 +27,7 @@ use std::time::SystemTime;
 use oxiguitar_plugin::audio::PrepareEffect;
 use oxiguitar_plugin::{
     Advice, Effect, Error, ErrorKind, Host, Link, Plugin, Processor, SharedFolder, TrackSection,
+    Update,
 };
 
 #[cfg_attr(all(x86_64_v3, not(test)), allow(dead_code))]
@@ -273,13 +274,80 @@ impl Effect for NamPlugin {
             .map(|taps| engine::Cabinet::new(&taps))
             .transpose()
             .map_err(|e| failed(format!("the cabinet can't be played: {e}")))?;
+        let (input, output) = (decibels(track.input), decibels(track.output));
         Ok(Box::new(Amp {
             model,
             cabinet,
-            input: decibels(track.input),
-            output: decibels(track.output) * level,
+            input: Glide::new(input, prepare.rate),
+            output: Glide::new(output * level, prepare.rate),
+            level,
             mono: vec![0.0; frames],
         }))
+    }
+
+    /// The track's new settings while the song plays (interface 1.5,
+    /// mateusrdp/oxiguitar#232): Input and Output glide to their new
+    /// levels. Anything that loads a file (the amp on or off, another
+    /// model or cabinet) waits for the song's next start.
+    fn update(&self, prepare: &PrepareEffect, previous: &str) -> Result<Option<Update>, Error> {
+        Ok(levels(&prepare.track.settings, previous).map(Update::new))
+    }
+}
+
+/// What a running amp can follow of a track's settings going from
+/// `previous` to `settings`: its levels, unless a file has to load.
+fn levels(settings: &str, previous: &str) -> Option<Levels> {
+    let (new, old) = (Track::from_text(settings), Track::from_text(previous));
+    if new.on != old.on || new.model != old.model || new.cabinet != old.cabinet {
+        return None;
+    }
+    Some(Levels {
+        input: decibels(new.input),
+        output: decibels(new.output),
+    })
+}
+
+/// The levels a running amp glides to, as gains.
+#[derive(Clone, Copy, Debug)]
+struct Levels {
+    input: f32,
+    /// Before the model's own level.
+    output: f32,
+}
+
+/// How long a level takes to settle at a new value, in seconds (to about
+/// 1/e of the way left).
+const GLIDE: f64 = 0.01;
+
+/// A gain moving smoothly to its target, one frame at a time.
+#[derive(Clone, Copy, Debug)]
+struct Glide {
+    now: f32,
+    target: f32,
+    /// The share of the way it goes each frame.
+    rate: f32,
+}
+
+impl Glide {
+    fn new(gain: f32, sample_rate: u32) -> Glide {
+        Glide {
+            now: gain,
+            target: gain,
+            rate: (1.0 - (-1.0 / (GLIDE * f64::from(sample_rate.max(1)))).exp()) as f32,
+        }
+    }
+
+    /// The gain for the next frame.
+    fn next(&mut self) -> f32 {
+        if self.now != self.target {
+            self.now += (self.target - self.now) * self.rate;
+            // Within a ten-thousandth (-80 dB) it is there: closer, f32 steps
+            // would stall.
+            if (self.target - self.now).abs() <= 1e-4 * self.target.abs().max(1e-3) {
+                self.now = self.target;
+            }
+        }
+        self.now
     }
 }
 
@@ -294,8 +362,10 @@ impl Processor for Through {
 struct Amp {
     model: Option<(engine::Model, Option<resample::Converted>)>,
     cabinet: Option<engine::Cabinet>,
-    input: f32,
-    output: f32,
+    input: Glide,
+    output: Glide,
+    /// The model's own level, brought to −18 dBFS, under the output.
+    level: f32,
     /// The track's sound in mono, as long as the longest piece.
     mono: Vec<f32>,
 }
@@ -309,7 +379,7 @@ impl Processor for Amp {
             let (l, r) = (&mut left[at..at + n], &mut right[at..at + n]);
             let mono = &mut self.mono[..n];
             for ((m, a), b) in mono.iter_mut().zip(l.iter()).zip(r.iter()) {
-                *m = (a + b) * 0.5 * self.input;
+                *m = (a + b) * 0.5 * self.input.next();
             }
             if let Some((model, converted)) = &mut self.model {
                 match converted {
@@ -321,11 +391,18 @@ impl Processor for Amp {
                 c.process(mono);
             }
             for ((m, a), b) in mono.iter().zip(l.iter_mut()).zip(r.iter_mut()) {
-                let v = m * self.output;
+                let v = m * self.output.next();
                 *a = v;
                 *b = v;
             }
             at += n;
+        }
+    }
+
+    fn apply(&mut self, update: &mut Update) {
+        if let Some(levels) = update.get::<Levels>() {
+            self.input.target = levels.input;
+            self.output.target = levels.output * self.level;
         }
     }
 
@@ -350,6 +427,43 @@ oxiguitar_plugin::export_plugin!(NamPlugin, "manifest-x86-64-v3.json");
 #[cfg(test)]
 mod tests {
     use oxiguitar_plugin::serde_json::{self, Value};
+
+    use super::{Glide, levels};
+
+    /// #232: the levels follow while the song plays; the amp turned on or
+    /// off, another model or cabinet wait for its next start.
+    #[test]
+    fn levels_follow_and_files_wait() {
+        let on = r#"{"on": true, "model": "a.nam", "input": 0, "output": 0}"#;
+        let louder = r#"{"on": true, "model": "a.nam", "input": 6, "output": -6}"#;
+        let l = levels(louder, on).unwrap();
+        assert!((l.input - 10f32.powf(0.3)).abs() < 1e-4);
+        assert!((l.output - 10f32.powf(-0.3)).abs() < 1e-4);
+        for waits in [
+            r#"{"on": false, "model": "a.nam"}"#,
+            r#"{"on": true, "model": "b.nam"}"#,
+            r#"{"on": true, "model": "a.nam", "cabinet": "none"}"#,
+        ] {
+            assert!(levels(waits, on).is_none(), "{waits}");
+        }
+    }
+
+    /// A level moves to its target smoothly, frame by frame, and gets
+    /// there.
+    #[test]
+    fn a_level_glides() {
+        let mut g = Glide::new(1.0, 48_000);
+        g.target = 2.0;
+        let first = g.next();
+        assert!(first > 1.0 && first < 1.01, "{first}");
+        let mut last = first;
+        for _ in 0..48_000 {
+            let v = g.next();
+            assert!(v >= last && v <= 2.0);
+            last = v;
+        }
+        assert_eq!(last, 2.0);
+    }
 
     const PLAIN: &str = include_str!("../manifest.json");
     const V3: &str = include_str!("../manifest-x86-64-v3.json");

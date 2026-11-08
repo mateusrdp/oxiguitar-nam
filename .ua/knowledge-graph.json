@@ -1,0 +1,1040 @@
+{
+  "version": "1.0.0",
+  "project": {
+    "name": "oxiguitar-nam",
+    "description": "The NAM plugin for OxiGuitar: Neural Amp Modeler amp models and cabinet impulse responses on guitar and bass tracks. Models (.nam) and impulse responses (.wav) are files you put in the nam folder; four cabinets are built in.",
+    "languages": [
+      "json",
+      "markdown",
+      "nam",
+      "rust",
+      "shell",
+      "toml",
+      "wav",
+      "yaml"
+    ],
+    "frameworks": [],
+    "analyzedAt": "2026-11-07T16:26:36.712Z",
+    "gitCommitHash": "17457985e75d9f7ae9c74e15160f25e51401ae9d"
+  },
+  "nodes": [
+    {
+      "id": "pipeline:.github/workflows/ci.yml",
+      "type": "pipeline",
+      "name": "ci.yml",
+      "filePath": ".github/workflows/ci.yml",
+      "summary": "GitHub Actions CI workflow running Rust clippy, cargo-deny, tests, and build checks across multiple Rust versions and platforms.",
+      "tags": [
+        "ci-cd",
+        "testing",
+        "build-system",
+        "quality-gate"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "pipeline:.github/workflows/publish.yml",
+      "type": "pipeline",
+      "name": "publish.yml",
+      "filePath": ".github/workflows/publish.yml",
+      "summary": "GitHub Actions workflow that publishes release artifacts to GitHub Releases and distributes packages.",
+      "tags": [
+        "ci-cd",
+        "deployment",
+        "release-management"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "pipeline:.github/workflows/release.yml",
+      "type": "pipeline",
+      "name": "release.yml",
+      "filePath": ".github/workflows/release.yml",
+      "summary": "GitHub Actions workflow that triggers on release events to build and publish the NAM plugin for multiple platforms.",
+      "tags": [
+        "ci-cd",
+        "deployment",
+        "release-management"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:.github/dependabot.yml",
+      "type": "config",
+      "name": "dependabot.yml",
+      "filePath": ".github/dependabot.yml",
+      "summary": "Dependabot configuration for automated dependency updates across the project.",
+      "tags": [
+        "configuration",
+        "dependency-management",
+        "automation"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:deny.toml",
+      "type": "config",
+      "name": "deny.toml",
+      "filePath": "deny.toml",
+      "summary": "cargo-deny configuration enforcing license compliance, advisory checks, and ban rules for Rust dependencies.",
+      "tags": [
+        "configuration",
+        "security",
+        "dependency-management"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:README.md",
+      "type": "document",
+      "name": "README.md",
+      "filePath": "README.md",
+      "summary": "Project overview documentation with installation instructions, build steps, and licensing information for the OxiGuitar NAM plugin.",
+      "tags": [
+        "documentation",
+        "entry-point",
+        "overview"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:CHANGELOG.md",
+      "type": "document",
+      "name": "CHANGELOG.md",
+      "filePath": "CHANGELOG.md",
+      "summary": "Version history tracking changes from 0.1.0 through unreleased, documenting added and changed features.",
+      "tags": [
+        "documentation",
+        "version-history"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:CONTRIBUTING.md",
+      "type": "document",
+      "name": "CONTRIBUTING.md",
+      "filePath": "CONTRIBUTING.md",
+      "summary": "Contribution guidelines covering branch strategy, pull request process, and DCO sign-off requirements.",
+      "tags": [
+        "documentation",
+        "development",
+        "community"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:CLAUDE.md",
+      "type": "document",
+      "name": "CLAUDE.md",
+      "filePath": "CLAUDE.md",
+      "summary": "Standing rules and repository guidance for working with Claude on the oxiguitar-nam project.",
+      "tags": [
+        "documentation",
+        "development",
+        "ai-assistance"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:Cargo.toml",
+      "type": "config",
+      "name": "Cargo.toml",
+      "filePath": "Cargo.toml",
+      "summary": "Rust package manifest defining the oxiguitar-nam-plugin crate with dependencies on oxiguitar-plugin SDK, nam-rs, and rustfft.",
+      "tags": [
+        "configuration",
+        "build-system",
+        "dependency-management"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "config:manifest.json",
+      "type": "config",
+      "name": "manifest.json",
+      "filePath": "manifest.json",
+      "summary": "OxiGuitar plugin manifest defining interface version 1.4, plugin metadata, effects, track sections, and folder requirements.",
+      "tags": [
+        "configuration",
+        "plugin-metadata",
+        "deployment"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:manifest-x86-64-v3.json",
+      "type": "config",
+      "name": "manifest-x86-64-v3.json",
+      "filePath": "manifest-x86-64-v3.json",
+      "summary": "Optimized plugin manifest for x86-64-v3 processors with AVX2/FMA, using NeuralAmpModeler-rs for faster amp processing.",
+      "tags": [
+        "configuration",
+        "plugin-metadata",
+        "performance"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "config:clippy.toml",
+      "type": "config",
+      "name": "clippy.toml",
+      "filePath": "clippy.toml",
+      "summary": "Rust Clippy linter configuration for code quality checks.",
+      "tags": [
+        "configuration",
+        "code-quality",
+        "linting"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:rustfmt.toml",
+      "type": "config",
+      "name": "rustfmt.toml",
+      "filePath": "rustfmt.toml",
+      "summary": "Rust formatter configuration for consistent code style.",
+      "tags": [
+        "configuration",
+        "code-style",
+        "formatting"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:build-oxp.sh",
+      "type": "file",
+      "name": "build-oxp.sh",
+      "filePath": "build-oxp.sh",
+      "summary": "Build script that compiles the OxiGuitar NAM plugin and produces distribution .oxp packages for multiple platforms.",
+      "tags": [
+        "build-system",
+        "script",
+        "deployment"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/lib.rs",
+      "type": "file",
+      "name": "lib.rs",
+      "filePath": "src/lib.rs",
+      "summary": "Main library entry point defining NamPlugin struct, plugin lifecycle (start, stop, process, get_preset, set_preset), track section handling, and cabinet/built-in model management.",
+      "tags": [
+        "entry-point",
+        "plugin-interface",
+        "barrel",
+        "tested"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:src/engine.rs",
+      "type": "file",
+      "name": "engine.rs",
+      "filePath": "src/engine.rs",
+      "summary": "Audio engine implementing Model (NAM model processing via nam-rs) and Cabinet (convolution-based impulse response processing) classes.",
+      "tags": [
+        "audio-engine",
+        "data-model",
+        "signal-processing",
+        "tested"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:src/convolve.rs",
+      "type": "file",
+      "name": "convolve.rs",
+      "filePath": "src/convolve.rs",
+      "summary": "FFT-based audio convolution engine using partitioned overlap-add for real-time impulse response processing.",
+      "tags": [
+        "signal-processing",
+        "fft",
+        "utility",
+        "tested"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:src/resample.rs",
+      "type": "file",
+      "name": "resample.rs",
+      "filePath": "src/resample.rs",
+      "summary": "Audio sample rate conversion using rustfft for resampling impulse responses between different sample rates.",
+      "tags": [
+        "signal-processing",
+        "utility",
+        "audio",
+        "tested"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:src/section.rs",
+      "type": "file",
+      "name": "section.rs",
+      "filePath": "src/section.rs",
+      "summary": "Track section handling for the OxiGuitar plugin interface, managing the NAM section within a track's effect chain.",
+      "tags": [
+        "plugin-interface",
+        "data-model",
+        "track-management",
+        "tested"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/settings.rs",
+      "type": "file",
+      "name": "settings.rs",
+      "filePath": "src/settings.rs",
+      "summary": "Settings serialization for cabinet and track configuration, supporting from_map/from_text parsing and write output.",
+      "tags": [
+        "serialization",
+        "data-model",
+        "configuration",
+        "tested"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/files.rs",
+      "type": "file",
+      "name": "files.rs",
+      "filePath": "src/files.rs",
+      "summary": "File discovery utilities for finding NAM model (.nam) and impulse response (.wav) files in plugin data directories.",
+      "tags": [
+        "utility",
+        "file-system",
+        "discovery",
+        "tested"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/wav.rs",
+      "type": "file",
+      "name": "wav.rs",
+      "filePath": "src/wav.rs",
+      "summary": "WAV file reader for loading impulse response audio data from WAV files.",
+      "tags": [
+        "file-io",
+        "audio",
+        "utility",
+        "tested"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:tests/host.rs",
+      "type": "file",
+      "name": "host.rs",
+      "filePath": "tests/host.rs",
+      "summary": "Integration tests simulating the OxiGuitar host environment to verify plugin behavior with real NAM models and cabinets.",
+      "tags": [
+        "test",
+        "integration",
+        "host-simulation"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:build.rs",
+      "type": "file",
+      "name": "build.rs",
+      "filePath": "build.rs",
+      "summary": "Rust build script that checks target CPU features and configures x86-64-v3 compilation when AVX2 and FMA are available.",
+      "tags": [
+        "build-system",
+        "compile-time",
+        "cpu-detection"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:scripts/check-dco.sh",
+      "type": "file",
+      "name": "check-dco.sh",
+      "filePath": "scripts/check-dco.sh",
+      "summary": "Script to verify Developer Certificate of Origin sign-offs on commit messages.",
+      "tags": [
+        "script",
+        "development",
+        "compliance"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:scripts/midi.sh",
+      "type": "file",
+      "name": "midi.sh",
+      "filePath": "scripts/midi.sh",
+      "summary": "Script to download or build the OxiGuitar MIDI plugin .oxp file for testing.",
+      "tags": [
+        "script",
+        "testing",
+        "dependency-management"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "document:fixtures/nam/README.md",
+      "type": "document",
+      "name": "README.md",
+      "filePath": "fixtures/nam/README.md",
+      "summary": "Documentation for NAM model fixtures used in unit and integration tests.",
+      "tags": [
+        "documentation",
+        "test-data"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:irs/README.md",
+      "type": "document",
+      "name": "README.md",
+      "filePath": "irs/README.md",
+      "summary": "Documentation listing the cabinet impulse responses shipped with the NAM plugin.",
+      "tags": [
+        "documentation",
+        "audio-assets"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:.github/pull_request_template.md",
+      "type": "document",
+      "name": "pull_request_template.md",
+      "filePath": ".github/pull_request_template.md",
+      "summary": "GitHub pull request template with change description and checklist sections.",
+      "tags": [
+        "documentation",
+        "development",
+        "ci-cd"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:fixtures/nam/lstm.nam",
+      "type": "file",
+      "name": "lstm.nam",
+      "filePath": "fixtures/nam/lstm.nam",
+      "summary": "LSTM-based Neural Amp Modeler model fixture for testing.",
+      "tags": [
+        "test-data",
+        "audio-model",
+        "neural-network"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:fixtures/nam/wavenet.nam",
+      "type": "file",
+      "name": "wavenet.nam",
+      "filePath": "fixtures/nam/wavenet.nam",
+      "summary": "WaveNet-based Neural Amp Modeler model fixture for testing.",
+      "tags": [
+        "test-data",
+        "audio-model",
+        "neural-network"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:irs/engl-retro-tube.wav",
+      "type": "file",
+      "name": "engl-retro-tube.wav",
+      "filePath": "irs/engl-retro-tube.wav",
+      "summary": "IR recording of Engl Retro Tube guitar cabinet, used as a built-in cabinet impulse response.",
+      "tags": [
+        "audio-asset",
+        "cabinet",
+        "impulse-response"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:irs/evh-5150-iii.wav",
+      "type": "file",
+      "name": "evh-5150-iii.wav",
+      "filePath": "irs/evh-5150-iii.wav",
+      "summary": "IR recording of EVH 5150 III guitar cabinet, used as a built-in cabinet impulse response.",
+      "tags": [
+        "audio-asset",
+        "cabinet",
+        "impulse-response"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:irs/marshall-jmp-2203-mod.wav",
+      "type": "file",
+      "name": "marshall-jmp-2203-mod.wav",
+      "filePath": "irs/marshall-jmp-2203-mod.wav",
+      "summary": "IR recording of modified Marshall JMP-2203 guitar cabinet, used as a built-in cabinet impulse response.",
+      "tags": [
+        "audio-asset",
+        "cabinet",
+        "impulse-response"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:irs/mesa-boogie-mark-v.wav",
+      "type": "file",
+      "name": "mesa-boogie-mark-v.wav",
+      "filePath": "irs/mesa-boogie-mark-v.wav",
+      "summary": "IR recording of Mesa Boogie Mark V guitar cabinet, used as a built-in cabinet impulse response.",
+      "tags": [
+        "audio-asset",
+        "cabinet",
+        "impulse-response"
+      ],
+      "complexity": "simple"
+    }
+  ],
+  "edges": [
+    {
+      "source": "pipeline:.github/workflows/ci.yml",
+      "target": "config:deny.toml",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "document:README.md",
+      "target": "config:Cargo.toml",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:README.md",
+      "target": "file:build-oxp.sh",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:CONTRIBUTING.md",
+      "target": "config:Cargo.toml",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "config:clippy.toml",
+      "target": "config:Cargo.toml",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "config:rustfmt.toml",
+      "target": "config:Cargo.toml",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "config:deny.toml",
+      "target": "config:Cargo.toml",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:src/lib.rs",
+      "target": "file:src/engine.rs",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/lib.rs",
+      "target": "file:src/section.rs",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/lib.rs",
+      "target": "file:src/settings.rs",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/lib.rs",
+      "target": "file:src/files.rs",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/engine.rs",
+      "target": "file:src/convolve.rs",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/engine.rs",
+      "target": "file:src/resample.rs",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/engine.rs",
+      "target": "file:src/wav.rs",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/section.rs",
+      "target": "file:src/settings.rs",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/settings.rs",
+      "target": "file:src/engine.rs",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/host.rs",
+      "target": "file:src/lib.rs",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/host.rs",
+      "target": "file:src/engine.rs",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/host.rs",
+      "target": "file:src/convolve.rs",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/host.rs",
+      "target": "file:src/resample.rs",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/host.rs",
+      "target": "file:src/wav.rs",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/host.rs",
+      "target": "file:src/files.rs",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/host.rs",
+      "target": "file:tests/host.rs",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/lib.rs",
+      "target": "file:src/engine.rs",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/engine.rs",
+      "target": "file:src/convolve.rs",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "document:README.md",
+      "target": "file:src/lib.rs",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "pipeline:.github/workflows/ci.yml",
+      "target": "file:src/lib.rs",
+      "type": "triggers",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "pipeline:.github/workflows/release.yml",
+      "target": "file:build-oxp.sh",
+      "type": "triggers",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:build-oxp.sh",
+      "target": "file:src/lib.rs",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:scripts/midi.sh",
+      "target": "file:tests/host.rs",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:fixtures/nam/README.md",
+      "target": "file:fixtures/nam/lstm.nam",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:fixtures/nam/README.md",
+      "target": "file:fixtures/nam/wavenet.nam",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:irs/README.md",
+      "target": "file:irs/engl-retro-tube.wav",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:irs/README.md",
+      "target": "file:irs/evh-5150-iii.wav",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:irs/README.md",
+      "target": "file:irs/marshall-jmp-2203-mod.wav",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:irs/README.md",
+      "target": "file:irs/mesa-boogie-mark-v.wav",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:src/engine.rs",
+      "target": "file:src/engine.rs",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/convolve.rs",
+      "target": "file:src/convolve.rs",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/resample.rs",
+      "target": "file:src/resample.rs",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/section.rs",
+      "target": "file:src/section.rs",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/settings.rs",
+      "target": "file:src/settings.rs",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/files.rs",
+      "target": "file:src/files.rs",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/wav.rs",
+      "target": "file:src/wav.rs",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:tests/host.rs",
+      "target": "file:tests/host.rs",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:src/lib.rs",
+      "target": "file:tests/host.rs",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5,
+      "description": "Direction corrected (was test → production)"
+    },
+    {
+      "source": "file:src/engine.rs",
+      "target": "file:tests/host.rs",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5,
+      "description": "Direction corrected (was test → production)"
+    },
+    {
+      "source": "file:src/convolve.rs",
+      "target": "file:tests/host.rs",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5,
+      "description": "Direction corrected (was test → production)"
+    },
+    {
+      "source": "file:src/resample.rs",
+      "target": "file:tests/host.rs",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5,
+      "description": "Direction corrected (was test → production)"
+    },
+    {
+      "source": "file:src/wav.rs",
+      "target": "file:tests/host.rs",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5,
+      "description": "Direction corrected (was test → production)"
+    },
+    {
+      "source": "file:src/files.rs",
+      "target": "file:tests/host.rs",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5,
+      "description": "Direction corrected (was test → production)"
+    },
+    {
+      "source": "file:src/section.rs",
+      "target": "file:tests/host.rs",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5,
+      "description": "Direction corrected (was test → production)"
+    },
+    {
+      "source": "file:src/settings.rs",
+      "target": "file:tests/host.rs",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5,
+      "description": "Direction corrected (was test → production)"
+    }
+  ],
+  "layers": [
+    {
+      "id": "layer:core-audio-engine",
+      "name": "Core Audio Engine",
+      "description": "The audio processing core: Model (NAM model inference via nam-rs), Cabinet (FFT-based convolution with impulse responses), Convolver (partitioned overlap-add FFT engine), and Resampler (sample rate conversion). These modules form the real-time audio processing pipeline.",
+      "nodeIds": [
+        "file:src/engine.rs",
+        "file:src/convolve.rs",
+        "file:src/resample.rs",
+        "file:src/wav.rs"
+      ]
+    },
+    {
+      "id": "layer:plugin-interface",
+      "name": "Plugin Interface",
+      "description": "The OxiGuitar plugin API implementation: NamPlugin struct with lifecycle methods (start, stop, process, get_preset, set_preset), track section management, and settings serialization. This is the bridge between the audio engine and the host application.",
+      "nodeIds": [
+        "file:src/lib.rs",
+        "file:src/section.rs",
+        "file:src/settings.rs",
+        "file:src/files.rs"
+      ]
+    },
+    {
+      "id": "layer:build-and-deploy",
+      "name": "Build and Deploy",
+      "description": "Build infrastructure: Cargo.toml (package manifest), build.rs (CPU feature detection), build-oxp.sh (distribution packaging), plugin manifests (manifest.json, manifest-x86-64-v3.json), and code quality configs (clippy.toml, rustfmt.toml, deny.toml).",
+      "nodeIds": [
+        "config:Cargo.toml",
+        "file:build.rs",
+        "file:build-oxp.sh",
+        "config:manifest.json",
+        "config:manifest-x86-64-v3.json",
+        "config:clippy.toml",
+        "config:rustfmt.toml",
+        "config:deny.toml"
+      ]
+    },
+    {
+      "id": "layer:ci-cd",
+      "name": "CI/CD Pipeline",
+      "description": "GitHub Actions workflows for continuous integration (ci.yml), publishing (publish.yml), and release management (release.yml), plus Dependabot for automated dependency updates.",
+      "nodeIds": [
+        "pipeline:.github/workflows/ci.yml",
+        "pipeline:.github/workflows/publish.yml",
+        "pipeline:.github/workflows/release.yml",
+        "config:.github/dependabot.yml",
+        "document:.github/pull_request_template.md"
+      ]
+    },
+    {
+      "id": "layer:documentation",
+      "name": "Documentation",
+      "description": "Project documentation: README.md (overview and setup), CHANGELOG.md (version history), CONTRIBUTING.md (contribution guidelines), CLAUDE.md (AI assistant guidance).",
+      "nodeIds": [
+        "document:README.md",
+        "document:CHANGELOG.md",
+        "document:CONTRIBUTING.md",
+        "document:CLAUDE.md"
+      ]
+    },
+    {
+      "id": "layer:testing",
+      "name": "Testing",
+      "description": "Test infrastructure: host.rs integration tests that simulate the OxiGuitar host, test scripts (check-dco.sh, midi.sh), and test fixtures (NAM models and IR files).",
+      "nodeIds": [
+        "file:tests/host.rs",
+        "file:scripts/check-dco.sh",
+        "file:scripts/midi.sh",
+        "document:fixtures/nam/README.md",
+        "document:irs/README.md",
+        "file:fixtures/nam/lstm.nam",
+        "file:fixtures/nam/wavenet.nam"
+      ]
+    },
+    {
+      "id": "layer:audio-assets",
+      "name": "Audio Assets",
+      "description": "Built-in cabinet impulse response WAV files shipped with the plugin: Engl Retro Tube, EVH 5150 III, Marshall JMP-2203 Mod, and Mesa Boogie Mark V.",
+      "nodeIds": [
+        "file:irs/engl-retro-tube.wav",
+        "file:irs/evh-5150-iii.wav",
+        "file:irs/marshall-jmp-2203-mod.wav",
+        "file:irs/mesa-boogie-mark-v.wav"
+      ]
+    }
+  ],
+  "tour": [
+    {
+      "order": 1,
+      "title": "Project Overview",
+      "description": "Start with the README to understand what this project is: the OxiGuitar NAM plugin that brings Neural Amp Modeler amp models and cabinet impulse responses to guitar and bass tracks within the OxiGuitar DAW plugin ecosystem.",
+      "nodeIds": [
+        "document:README.md"
+      ]
+    },
+    {
+      "order": 2,
+      "title": "Plugin Entry Point",
+      "description": "Explore src/lib.rs — the main library entry point that implements the NamPlugin struct. This file defines the plugin's lifecycle (start, stop, process, get_preset, set_preset) and orchestrates all other modules.",
+      "nodeIds": [
+        "file:src/lib.rs"
+      ]
+    },
+    {
+      "order": 3,
+      "title": "Audio Engine Core",
+      "description": "Dive into the audio processing pipeline: engine.rs (Model and Cabinet classes), convolve.rs (FFT-based partitioned convolution), resample.rs (sample rate conversion), and wav.rs (WAV file loading). This is where the actual amp modeling and cabinet simulation happens.",
+      "nodeIds": [
+        "file:src/engine.rs",
+        "file:src/convolve.rs",
+        "file:src/resample.rs",
+        "file:src/wav.rs"
+      ]
+    },
+    {
+      "order": 4,
+      "title": "Plugin Interface Layer",
+      "description": "Understand how the audio engine connects to OxiGuitar: section.rs (track section handling), settings.rs (serialization), and files.rs (NAM model and IR file discovery).",
+      "nodeIds": [
+        "file:src/section.rs",
+        "file:src/settings.rs",
+        "file:src/files.rs"
+      ]
+    },
+    {
+      "order": 5,
+      "title": "Build System",
+      "description": "Review the Rust build setup: Cargo.toml (dependencies and features), build.rs (CPU feature detection for x86-64-v3), build-oxp.sh (distribution packaging), and plugin manifests.",
+      "nodeIds": [
+        "config:Cargo.toml",
+        "file:build.rs",
+        "file:build-oxp.sh",
+        "config:manifest.json",
+        "config:manifest-x86-64-v3.json"
+      ]
+    },
+    {
+      "order": 6,
+      "title": "Testing and Verification",
+      "description": "Examine the test suite: tests/host.rs integration tests that verify plugin behavior with real NAM models, and the fixture files (lstm.nam, wavenet.nam) used for testing.",
+      "nodeIds": [
+        "file:tests/host.rs",
+        "file:fixtures/nam/lstm.nam",
+        "file:fixtures/nam/wavenet.nam"
+      ]
+    },
+    {
+      "order": 7,
+      "title": "Built-in Cabinets",
+      "description": "Explore the four cabinet impulse responses shipped with the plugin: Engl Retro Tube, EVH 5150 III, Marshall JMP-2203 Mod, and Mesa Boogie Mark V — all in the irs/ directory.",
+      "nodeIds": [
+        "file:irs/engl-retro-tube.wav",
+        "file:irs/evh-5150-iii.wav",
+        "file:irs/marshall-jmp-2203-mod.wav",
+        "file:irs/mesa-boogie-mark-v.wav"
+      ]
+    },
+    {
+      "order": 8,
+      "title": "CI/CD and Automation",
+      "description": "Review the GitHub Actions workflows: ci.yml (testing and quality gates), publish.yml (artifact distribution), release.yml (release automation), and dependabot.yml (dependency updates).",
+      "nodeIds": [
+        "pipeline:.github/workflows/ci.yml",
+        "pipeline:.github/workflows/publish.yml",
+        "pipeline:.github/workflows/release.yml",
+        "config:.github/dependabot.yml"
+      ]
+    }
+  ]
+}
