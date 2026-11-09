@@ -41,7 +41,7 @@ rustfft = "6.4.1"
 # names no processor features so that the licence and advisory tools
 # (cargo-about, cargo-deny), which don't know the build's, still see it.
 [target.'cfg(all(target_os = "linux", target_env = "gnu", target_arch = "x86_64"))'.dependencies]
-NeuralAmpModeler-rs = { version = "1.0.1", default-features = false, optional = true }
+NeuralAmpModeler-rs = { version = "2.0.0", default-features = false, optional = true }
 
 # Plugins deny `unsafe` rather than forbid it: `export_plugin!` allows it on
 # the two attributes it generates, and nowhere else.
