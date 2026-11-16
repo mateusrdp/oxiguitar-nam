@@ -6,7 +6,7 @@ On Linux x86_64 the release also holds a second file, `nam-x86-64-v3.oxp`, built
 
 ## Install
 
-Every [release](https://github.com/mateusrdp/oxiguitar-nam/releases) holds a zip per system (Linux x86_64 and ARM64, Windows x86_64 and ARM64, macOS), a `.deb` and an `.rpm` for Linux, a per-user Windows installer (no administrator needed), a macOS `.pkg`, and a `SHA256SUMS` file. The OxiGuitar manual's [install page](https://mateusrdp.github.io/oxiguitar/installing.html) says which one to use and how to keep the plugin updated through your package manager. The plugin needs an OxiGuitar with plugin interface 1.8, which is not released yet (its 0.3 releases work with 0.14 and later, its 0.2 releases with 0.11 and later), and the MIDI plugin. Its Input and Output work while the song plays.
+Every [release](https://github.com/mateusrdp/oxiguitar-nam/releases) holds a zip per system (Linux x86_64 and ARM64, Windows x86_64 and ARM64, macOS), a `.deb` and an `.rpm` for Linux, a per-user Windows installer (no administrator needed), a macOS `.pkg`, and a `SHA256SUMS` file. The OxiGuitar manual's [install page](https://mateusrdp.github.io/oxiguitar/installing.html) says which one to use and how to keep the plugin updated through your package manager. The plugin needs OxiGuitar 0.20.0 or later (plugin interface 1.8; its 0.3 releases work with 0.14 and later, its 0.2 releases with 0.11 and later), and the MIDI plugin. Its Input and Output work while the song plays.
 
 ## Build and test
 
