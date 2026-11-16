@@ -6,6 +6,8 @@ follows [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+## [0.4.0] - 2026-11-16
+
 ### Changed
 
 - **`nam-x86-64-v3.oxp` uses NeuralAmpModeler-rs 2.0** (from 1.0.1). Its
