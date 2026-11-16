@@ -6,6 +6,8 @@ follows [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+## [0.4.1] - 2026-11-16
+
 ### Changed
 
 - **NeuralAmpModeler-rs plays wherever it builds**, now that its 2.0
