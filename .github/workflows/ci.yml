@@ -196,6 +196,39 @@ jobs:
           export OXIGUITAR_TEST_NAM_X86_64_V3="$(ls "$PWD"/dist/nam-*-linux-x86_64-v3.oxp)"
           cargo test --locked --test host the_nam_build_for_x86_64_v3 -- --nocapture
 
+  # The aarch64 builds (Linux and the Apple Silicon half of the macOS file),
+  # where NeuralAmpModeler-rs always plays (build.rs's cfg fast): clippy on
+  # that code, and the agreement tests with their numbers (its model and
+  # cabinet play what nam-rs and our convolution play, the cabinet a
+  # 64-frame partition later). The test matrix runs the rest there,
+  # the contract suite and the real-time checks included.
+  nam-aarch64:
+    name: NAM on aarch64 (${{ matrix.name }})
+    needs: rust
+    if: needs.rust.outputs.present == 'true'
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - { name: Linux, os: ubuntu-24.04-arm }
+          - { name: macOS, os: macos-15 }
+    env:
+      CARGO_TERM_COLOR: never
+    steps:
+      - uses: actions/checkout@v7
+      - uses: dtolnay/rust-toolchain@master
+        with:
+          toolchain: ${{ env.MSRV }}
+          components: clippy
+      - uses: Swatinem/rust-cache@v2
+        with:
+          key: aarch64
+      - name: Clippy, the aarch64 build
+        run: cargo clippy --all-targets --features oxp --locked -- -D warnings
+      - name: Every build sounds the same
+        run: cargo test --lib --locked engine -- --nocapture
+
   dco:
     name: Sign-off (DCO)
     if: github.event_name == 'pull_request'
@@ -212,7 +245,7 @@ jobs:
   ci-success:
     name: ci-success
     if: always()
-    needs: [rust, fmt, lint, test, deny, nam-x86-64-v3, dco]
+    needs: [rust, fmt, lint, test, deny, nam-x86-64-v3, nam-aarch64, dco]
     runs-on: ubuntu-24.04
     steps:
       - name: Every job passed
