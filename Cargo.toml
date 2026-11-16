@@ -31,7 +31,7 @@ x86-64-v3 = ["dep:NeuralAmpModeler-rs"]
 # so this is a commit of its pull request (mateusrdp/oxiguitar#292); the
 # tag once it exists. Nothing of OxiGuitar's is
 # on crates.io.
-oxiguitar-plugin = { git = "https://github.com/mateusrdp/oxiguitar", rev = "4906c6db3bef86e2d6fa8e2879ca79b0119fc30e" }
+oxiguitar-plugin = { git = "https://github.com/mateusrdp/oxiguitar", rev = "6b4589cad7cec58cc9fc99659a4cbd1b89e234ca" }
 nam-rs = "0.4.0"
 rustfft = "6.4.1"
 
@@ -60,8 +60,8 @@ todo = "warn"
 [dev-dependencies]
 # tests/host.rs builds the .oxp file and checks it through OxiGuitar's own
 # plugin host, as the app would load it.
-oxiguitar-plugin-test = { git = "https://github.com/mateusrdp/oxiguitar", rev = "4906c6db3bef86e2d6fa8e2879ca79b0119fc30e" }
-oxiguitar-host = { git = "https://github.com/mateusrdp/oxiguitar", rev = "4906c6db3bef86e2d6fa8e2879ca79b0119fc30e" }
+oxiguitar-plugin-test = { git = "https://github.com/mateusrdp/oxiguitar", rev = "6b4589cad7cec58cc9fc99659a4cbd1b89e234ca" }
+oxiguitar-host = { git = "https://github.com/mateusrdp/oxiguitar", rev = "6b4589cad7cec58cc9fc99659a4cbd1b89e234ca" }
 
 [profile.release]
 # Small files. Keep the default `panic = "unwind"`: a panic is then caught
