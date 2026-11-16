@@ -8,6 +8,12 @@ follows [Semantic Versioning](https://semver.org/).
 
 ### Changed
 
+- **`nam-x86-64-v3.oxp` uses NeuralAmpModeler-rs 2.0** (from 1.0.1). Its
+  cabinet adapter now takes pieces of any size at a constant latency of one
+  partition (64 frames), so the plugin hands it the track's sound as it
+  comes and takes the latency from the adapter: a cabinet still sounds
+  1.3 ms late at 48 kHz, not 2.7 ms. The amp models sound as before.
+
 - **The amp says where it goes in a track's chain** (mateusrdp/oxiguitar#293):
   `"order": 200` on the effect, plugin interface 1.8. OxiGuitar no longer
   keeps a list of plugin ids for the default order of a track's effects;
