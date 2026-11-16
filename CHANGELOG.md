@@ -6,6 +6,16 @@ follows [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+### Changed
+
+- **The amp says where it goes in a track's chain** (mateusrdp/oxiguitar#293):
+  `"order": 200` on the effect, plugin interface 1.8. OxiGuitar no longer
+  keeps a list of plugin ids for the default order of a track's effects;
+  each effect's manifest says it (pedals 100, amp models 200, equalizers
+  300), and the Track tab's arrows still change it for a track. The plugin
+  now needs OxiGuitar 0.20.0 or later (interface 1.8), whose tag the SDK
+  comes from.
+
 ## [0.3.0] - 2026-11-08
 
 ### Added

@@ -1,5 +1,5 @@
 {
-  "interface": "1.5",
+  "interface": "1.8",
   "id": "oxiguitar.nam",
   "name": "NAM",
   "version": "0.3.0",
@@ -8,7 +8,7 @@
   "license": "GPL-3.0-or-later",
   "homepage": "https://github.com/mateusrdp/oxiguitar-nam",
   "effects": [
-    { "id": "nam", "name": "NAM amp", "plays": ["fretted", "fretless"] }
+    { "id": "nam", "name": "NAM amp", "plays": ["fretted", "fretless"], "order": 200 }
   ],
   "track_sections": [
     { "id": "nam", "title": "Amp (NAM)", "plays": ["fretted", "fretless"] }
