@@ -165,7 +165,7 @@ fn our_nam_plugin_converts_the_rate_for_its_model() {
             .collect();
         let mut r = l.clone();
         let before = amp.allocations();
-        assert!(amp.process(&mut l, &mut r));
+        assert!(amp.process(&mut l, &mut r, 0.0, 0.0));
         if k > 0 {
             allocated += amp.allocations().saturating_sub(before);
         }

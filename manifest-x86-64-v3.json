@@ -1,8 +1,8 @@
 {
-  "interface": "1.5",
+  "interface": "1.8",
   "id": "oxiguitar.nam",
   "name": "NAM",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "Amp models (Neural Amp Modeler captures) and cabinet impulse responses on guitar and bass tracks, set in the track dialog. Models and impulse responses are files you put in the nam folder.",
   "authors": [
     "Mateus Rocha de Paula",
@@ -40,7 +40,8 @@
       "plays": [
         "fretted",
         "fretless"
-      ]
+      ],
+      "order": 200
     }
   ],
   "track_sections": [

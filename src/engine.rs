@@ -6,7 +6,7 @@
 //! - Every build (`nam.oxp`): nam-rs 0.4.0 for the model, `convolve` for
 //!   the cabinet, with no latency.
 //! - The build for Linux on x86-64-v3 processors (`cfg(x86_64_v3)`,
-//!   `nam-x86-64-v3.oxp`, build.rs): NeuralAmpModeler-rs 1.0.1 for both,
+//!   `nam-x86-64-v3.oxp`, build.rs): NeuralAmpModeler-rs 2.0 for both,
 //!   about ten times faster. Its model plays what nam-rs plays (both match
 //!   NAM's reference and each other to under 1e-5), and its cabinet what
 //!   ours plays, `Cabinet::latency` frames later (one partition of its
@@ -102,18 +102,11 @@ impl Model {
 pub(crate) struct Cabinet {
     #[cfg(not(x86_64_v3))]
     convolver: crate::convolve::Convolver,
+    /// Since NeuralAmpModeler-rs 2.0 it takes pieces of any size and
+    /// hands each frame back exactly one partition later: its output queue
+    /// starts with a partition of silence.
     #[cfg(x86_64_v3)]
     adapter: neural_amp_modeler_rs::prelude::CabSimAdapter,
-    /// The partition being filled with the track's sound.
-    #[cfg(x86_64_v3)]
-    input: [f32; PARTITION],
-    /// The cabinet's sound of the partition before, handed out while the
-    /// next one fills: what makes the latency exactly one partition.
-    #[cfg(x86_64_v3)]
-    output: [f32; PARTITION],
-    /// How much of `input` is filled (and of `output` handed out).
-    #[cfg(x86_64_v3)]
-    at: usize,
 }
 
 /// NeuralAmpModeler-rs's partition, in frames: the cabinet's latency
@@ -135,12 +128,7 @@ impl Cabinet {
             use neural_amp_modeler_rs::prelude::{CabSimAdapter, ConvEngine};
             let engine = ConvEngine::new(taps, PARTITION).map_err(|e| e.to_string())?;
             let adapter = CabSimAdapter::new(Box::new(engine)).map_err(|e| e.to_string())?;
-            Ok(Cabinet {
-                adapter,
-                input: [0.0; PARTITION],
-                output: [0.0; PARTITION],
-                at: 0,
-            })
+            Ok(Cabinet { adapter })
         }
     }
 
@@ -148,22 +136,8 @@ impl Cabinet {
     pub(crate) fn process(&mut self, io: &mut [f32]) {
         #[cfg(not(x86_64_v3))]
         self.convolver.process(io);
-        // NeuralAmpModeler-rs's convolution is given whole partitions only:
-        // given a piece shorter than one, it hands back silence for what it
-        // hasn't computed yet, so pieces of uneven sizes would leave gaps.
-        // Each frame goes in and the frame a partition earlier comes out.
         #[cfg(x86_64_v3)]
-        for frame in io.iter_mut() {
-            let heard = self.output[self.at];
-            self.input[self.at] = *frame;
-            *frame = heard;
-            self.at += 1;
-            if self.at == PARTITION {
-                self.adapter.process_block(&mut self.input, None);
-                self.output = self.input;
-                self.at = 0;
-            }
-        }
+        self.adapter.process_block(io, None);
     }
 
     /// How many frames late the cabinet's sound comes.
@@ -171,7 +145,7 @@ impl Cabinet {
         #[cfg(not(x86_64_v3))]
         return 0;
         #[cfg(x86_64_v3)]
-        return PARTITION;
+        return self.adapter.latency_samples();
     }
 }
 

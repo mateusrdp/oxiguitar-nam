@@ -1,7 +1,7 @@
 [package]
 name = "oxiguitar-nam-plugin"
 description = "The OxiGuitar NAM plugin: amp models (Neural Amp Modeler captures) and cabinet impulse responses on guitar and bass tracks, set in the track dialog."
-version = "0.3.0"
+version = "0.4.0"
 edition = "2024"
 # Rust from rustup, raised only when something needs it (CONTRIBUTING.md).
 rust-version = "1.99"
@@ -27,10 +27,9 @@ oxp = []
 x86-64-v3 = ["dep:NeuralAmpModeler-rs"]
 
 [dependencies]
-# The SDK, from OxiGuitar's repository at the tag of the release this is
-# built for: v0.14.0 has interface 1.5, frozen. Nothing of OxiGuitar's is
-# on crates.io.
-oxiguitar-plugin = { git = "https://github.com/mateusrdp/oxiguitar", tag = "v0.14.0" }
+# The SDK, from OxiGuitar's repository at the tag of OxiGuitar 0.20.0, the
+# first release with interface 1.8. Nothing of OxiGuitar's is on crates.io.
+oxiguitar-plugin = { git = "https://github.com/mateusrdp/oxiguitar", tag = "v0.20.0" }
 nam-rs = "0.4.0"
 rustfft = "6.4.1"
 
@@ -41,7 +40,7 @@ rustfft = "6.4.1"
 # names no processor features so that the licence and advisory tools
 # (cargo-about, cargo-deny), which don't know the build's, still see it.
 [target.'cfg(all(target_os = "linux", target_env = "gnu", target_arch = "x86_64"))'.dependencies]
-NeuralAmpModeler-rs = { version = "1.0.1", default-features = false, optional = true }
+NeuralAmpModeler-rs = { version = "2.0.0", default-features = false, optional = true }
 
 # Plugins deny `unsafe` rather than forbid it: `export_plugin!` allows it on
 # the two attributes it generates, and nowhere else.
@@ -59,8 +58,8 @@ todo = "warn"
 [dev-dependencies]
 # tests/host.rs builds the .oxp file and checks it through OxiGuitar's own
 # plugin host, as the app would load it.
-oxiguitar-plugin-test = { git = "https://github.com/mateusrdp/oxiguitar", tag = "v0.14.0" }
-oxiguitar-host = { git = "https://github.com/mateusrdp/oxiguitar", tag = "v0.14.0" }
+oxiguitar-plugin-test = { git = "https://github.com/mateusrdp/oxiguitar", tag = "v0.20.0" }
+oxiguitar-host = { git = "https://github.com/mateusrdp/oxiguitar", tag = "v0.20.0" }
 
 [profile.release]
 # Small files. Keep the default `panic = "unwind"`: a panic is then caught

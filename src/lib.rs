@@ -14,7 +14,7 @@
 //! - `engine` plays the model and the cabinet: nam-rs 0.4.0 (MIT) and
 //!   `convolve` (with no latency), or in the build for Linux on x86-64-v3
 //!   processors (`nam-x86-64-v3.oxp`, with its own manifest) NeuralAmpModeler-rs
-//!   1.0.1 (Apache-2.0) for both, several times faster; both used exactly
+//!   2.0 (Apache-2.0) for both, several times faster; both used exactly
 //!   as published. The model plays at the rate it was captured at: a track
 //!   played at another rate goes there and back through `resample`.
 //! - Four cabinet responses from Guitarix's BestPlugins pack
