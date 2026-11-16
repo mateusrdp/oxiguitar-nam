@@ -6,6 +6,13 @@ follows [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+### Added
+
+- **A Flatpak extension**, `io.github.mateusrdp.OxiGuitar.Plugin.nam`, in
+  the release and in OxiGuitar's Flatpak repository, for OxiGuitar
+  installed as a Flatpak. 0.4.0 was released without it: its release was
+  built just before the packaging gained Flatpak extensions.
+
 ## [0.4.0] - 2026-11-16
 
 ### Changed
