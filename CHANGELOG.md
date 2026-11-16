@@ -18,6 +18,12 @@ follows [Semantic Versioning](https://semver.org/).
   NeuralAmpModeler-rs builds read the model files with it too (the ARM64
   ones hold no nam-rs at all), and whether a capture holds a cabinet is
   read the same way in every build, as nam-rs reads it.
+### Added
+
+- **A Flatpak extension**, `io.github.mateusrdp.OxiGuitar.Plugin.nam`, in
+  the release and in OxiGuitar's Flatpak repository, for OxiGuitar
+  installed as a Flatpak. 0.4.0 was released without it: its release was
+  built just before the packaging gained Flatpak extensions.
 
 ## [0.4.0] - 2026-11-16
 
