@@ -13,8 +13,8 @@ follows [Semantic Versioning](https://semver.org/).
   keeps a list of plugin ids for the default order of a track's effects;
   each effect's manifest says it (pedals 100, amp models 200, equalizers
   300), and the Track tab's arrows still change it for a track. The plugin
-  now needs an OxiGuitar with interface 1.8. The SDK is pinned to a commit
-  of mateusrdp/oxiguitar#292 until that interface has a tag.
+  now needs OxiGuitar 0.20.0 or later (interface 1.8), whose tag the SDK
+  comes from.
 
 ## [0.3.0] - 2026-11-08
 
