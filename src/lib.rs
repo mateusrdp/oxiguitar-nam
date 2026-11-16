@@ -11,11 +11,12 @@
 //!   `plugins` and `soundfonts`); nothing is ever fetched.
 //! - `settings` is a track's choice; `section` shows it in the track
 //!   dialog.
-//! - `engine` plays the model and the cabinet: nam-rs 0.4.0 (MIT) and
-//!   `convolve` (with no latency), or in the build for Linux on x86-64-v3
-//!   processors (`nam-x86-64-v3.oxp`, with its own manifest) NeuralAmpModeler-rs
-//!   2.0 (Apache-2.0) for both, several times faster; both used exactly
-//!   as published. The model plays at the rate it was captured at: a track
+//! - `engine` reads the model file and plays the model and the cabinet:
+//!   NeuralAmpModeler-rs 2.0 (Apache-2.0) wherever it builds, several
+//!   times faster (aarch64 under Linux and macOS, and on Linux x86_64 the
+//!   build for x86-64-v3 processors, `nam-x86-64-v3.oxp`, with its own
+//!   manifest); elsewhere nam-rs 0.4.0 (MIT) and `convolve` (with no
+//!   latency). Both used exactly as published. The model plays at the rate it was captured at: a track
 //!   played at another rate goes there and back through `resample`.
 //! - Four cabinet responses from Guitarix's BestPlugins pack
 //!   (GPL-2.0-or-later) are built in (`irs/`).
@@ -30,7 +31,7 @@ use oxiguitar_plugin::{
     Update,
 };
 
-#[cfg_attr(all(x86_64_v3, not(test)), allow(dead_code))]
+#[cfg_attr(all(fast, not(test)), allow(dead_code))]
 pub(crate) mod convolve;
 pub mod engine;
 pub(crate) mod files;
@@ -93,7 +94,7 @@ pub(crate) fn built_in_title(name: &str) -> &'static str {
 struct Loaded {
     path: PathBuf,
     modified: Option<SystemTime>,
-    file: Arc<nam_rs::NamModel>,
+    file: Arc<engine::File>,
 }
 
 /// The plugin.
@@ -125,7 +126,7 @@ fn decibels(db: f32) -> f32 {
 
 impl NamPlugin {
     /// The model file at `path`, read or from the ones already read.
-    fn model_file(&self, path: &Path) -> Result<Arc<nam_rs::NamModel>, Error> {
+    fn model_file(&self, path: &Path) -> Result<Arc<engine::File>, Error> {
         let modified = std::fs::metadata(path).and_then(|m| m.modified()).ok();
         let mut loaded = self
             .loaded
@@ -137,7 +138,7 @@ impl NamPlugin {
         {
             return Ok(l.file.clone());
         }
-        let file = nam_rs::NamModel::from_file(path)
+        let file = engine::File::read(path)
             .map_err(|e| failed(format!("{} can't be read: {e}", path.display())))?;
         let file = Arc::new(file);
         loaded.retain(|l| l.path != path);
@@ -257,13 +258,14 @@ impl Effect for NamPlugin {
                 .and_then(|f| files::resolve(f, name))
                 .ok_or_else(|| failed(format!("the model {name} isn't in the nam folder")))?;
             let file = self.model_file(&path)?;
-            includes_cab = file.includes_cab();
-            if let Some(loudness) = file.loudness() {
+            let facts = file.facts();
+            includes_cab = facts.includes_cab;
+            if let Some(loudness) = facts.loudness {
                 level = decibels(TARGET - loudness);
             }
-            let runtime = engine::Model::new(&path, &file)
+            let runtime = engine::Model::new(&file)
                 .map_err(|e| failed(format!("{name} can't be played: {e}")))?;
-            let theirs = file.expected_sample_rate().round() as u32;
+            let theirs = facts.rate.round() as u32;
             let converted = (theirs != prepare.rate && theirs > 0)
                 .then(|| resample::Converted::new(prepare.rate, theirs, frames));
             model = Some((runtime, converted));

@@ -6,6 +6,27 @@ follows [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+## [0.4.1] - 2026-11-16
+
+### Changed
+
+- **NeuralAmpModeler-rs plays wherever it builds**, now that its 2.0
+  runs on ARM64: `nam.oxp` on Linux ARM64 and the Apple Silicon half of
+  the macOS file use it too, as `nam-x86-64-v3.oxp` does on Linux
+  x86_64, about ten times faster than nam-rs (a cabinet sounds 64 frames,
+  1.3 ms at 48 kHz, late there, and the other tracks wait for it). nam-rs
+  stays where NeuralAmpModeler-rs can't build: Windows, Intel Macs and
+  `nam.oxp` on Linux x86_64 (processors without AVX2 and FMA). The
+  NeuralAmpModeler-rs builds read the model files with it too (the ARM64
+  ones hold no nam-rs at all), and whether a capture holds a cabinet is
+  read the same way in every build, as nam-rs reads it.
+### Added
+
+- **A Flatpak extension**, `io.github.mateusrdp.OxiGuitar.Plugin.nam`, in
+  the release and in OxiGuitar's Flatpak repository, for OxiGuitar
+  installed as a Flatpak. 0.4.0 was released without it: its release was
+  built just before the packaging gained Flatpak extensions.
+
 ## [0.4.0] - 2026-11-16
 
 ### Changed

@@ -1,7 +1,7 @@
 [package]
 name = "oxiguitar-nam-plugin"
 description = "The OxiGuitar NAM plugin: amp models (Neural Amp Modeler captures) and cabinet impulse responses on guitar and bass tracks, set in the track dialog."
-version = "0.4.0"
+version = "0.4.1"
 edition = "2024"
 # Rust from rustup, raised only when something needs it (CONTRIBUTING.md).
 rust-version = "1.99"
@@ -20,27 +20,41 @@ crate-type = ["lib"]
 
 [features]
 oxp = []
-# NeuralAmpModeler-rs in place of nam-rs and our convolution, with the
-# manifest manifest-x86-64-v3.json: on Linux x86_64 with
-# RUSTFLAGS="-C target-cpu=x86-64-v3" (build.rs checks the eight features
-# of that level); elsewhere the crate builds as usual.
+# NeuralAmpModeler-rs on Linux x86_64, with the manifest
+# manifest-x86-64-v3.json: built with RUSTFLAGS="-C target-cpu=x86-64-v3"
+# (build.rs checks the eight features of that level); elsewhere the crate
+# builds as usual. On aarch64 (Linux, macOS) the library is always used and
+# needs no feature (build.rs).
 x86-64-v3 = ["dep:NeuralAmpModeler-rs"]
 
 [dependencies]
 # The SDK, from OxiGuitar's repository at the tag of OxiGuitar 0.20.0, the
 # first release with interface 1.8. Nothing of OxiGuitar's is on crates.io.
 oxiguitar-plugin = { git = "https://github.com/mateusrdp/oxiguitar", tag = "v0.20.0" }
-nam-rs = "0.4.0"
 rustfft = "6.4.1"
 
-# Linux on x86_64 only (Windows and macOS can't build it). The feature also
-# needs RUSTFLAGS="-C target-cpu=x86-64-v3": without it the library's build
+# The engine (src/engine.rs): NeuralAmpModeler-rs wherever it builds, nam-rs
+# elsewhere. NeuralAmpModeler-rs 2.0 runs on x86_64 processors with the
+# x86-64-v3 level (Linux) and on aarch64 (Linux, Apple Silicon); it can't
+# build for Windows, nor for x86_64 without that level (no fallback).
+#
+# nam-rs: Windows, Intel Macs (the x86_64 half of the universal file) and
+# nam.oxp on Linux x86_64 (processors without AVX2 and FMA).
+[target.'cfg(not(all(target_arch = "aarch64", any(target_os = "linux", target_os = "macos"))))'.dependencies]
+nam-rs = "0.4.0"
+
+# Linux x86_64: only with the feature x86-64-v3, which also needs
+# RUSTFLAGS="-C target-cpu=x86-64-v3": without it the library's build
 # script stops the build, so `cargo clippy --workspace --all-features`
 # leaves this crate out (CI's lint job; CONTRIBUTING.md). The condition
 # names no processor features so that the licence and advisory tools
 # (cargo-about, cargo-deny), which don't know the build's, still see it.
 [target.'cfg(all(target_os = "linux", target_env = "gnu", target_arch = "x86_64"))'.dependencies]
 NeuralAmpModeler-rs = { version = "2.0.0", default-features = false, optional = true }
+
+# aarch64 on Linux and macOS: always (NEON is part of every aarch64 target).
+[target.'cfg(all(target_arch = "aarch64", any(target_os = "linux", target_os = "macos")))'.dependencies]
+NeuralAmpModeler-rs = { version = "2.0.0", default-features = false }
 
 # Plugins deny `unsafe` rather than forbid it: `export_plugin!` allows it on
 # the two attributes it generates, and nowhere else.
@@ -56,6 +70,9 @@ dbg_macro = "warn"
 todo = "warn"
 
 [dev-dependencies]
+# The tests compare NeuralAmpModeler-rs's builds with nam-rs's
+# (src/engine.rs), on aarch64 too.
+nam-rs = "0.4.0"
 # tests/host.rs builds the .oxp file and checks it through OxiGuitar's own
 # plugin host, as the app would load it.
 oxiguitar-plugin-test = { git = "https://github.com/mateusrdp/oxiguitar", tag = "v0.20.0" }

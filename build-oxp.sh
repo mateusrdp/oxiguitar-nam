@@ -11,8 +11,9 @@
 # are (docs/plugins/template in github.com/mateusrdp/oxiguitar). On macOS it
 # builds both processors and joins them into one universal file (needs both
 # Rust targets: rustup target add aarch64-apple-darwin x86_64-apple-darwin).
-# On Windows, run it from Git Bash. .github/workflows/release.yml runs it on
-# each system.
+# The Apple Silicon half plays through NeuralAmpModeler-rs, the Intel half
+# through nam-rs (build.rs). On Windows, run it from Git Bash.
+# .github/workflows/release.yml runs it on each system.
 
 set -euo pipefail
 
@@ -52,9 +53,10 @@ case "$host" in
         out="dist/$NAME-$version-linux-${host%%-*}.oxp"
         build
         cp "target/release/lib$LIBRARY.so" "$out"
-        # Linux on x86_64 also gets the build for processors with AVX2 and FMA
-        # (x86-64-v3): NeuralAmpModeler-rs in place of nam-rs, with its own
-        # manifest. OxiGuitar takes it over nam.oxp where the processor has
+        # On aarch64 the plain build already plays through NeuralAmpModeler-rs
+        # (build.rs). Linux on x86_64 also gets the build for processors with
+        # AVX2 and FMA (x86-64-v3): NeuralAmpModeler-rs in place of nam-rs,
+        # with its own manifest. OxiGuitar takes it over nam.oxp where the processor has
         # those features (manifest-x86-64-v3.json). The release workflow
         # names it nam-x86-64-v3.oxp from the -v3 at the end of the file name.
         if [[ "${host%%-*}" == x86_64 ]]; then
