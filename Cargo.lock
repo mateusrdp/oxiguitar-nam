@@ -304,7 +304,7 @@ dependencies = [
 
 [[package]]
 name = "oxiguitar-nam-plugin"
-version = "0.4.1"
+version = "0.4.2"
 dependencies = [
  "NeuralAmpModeler-rs",
  "nam-rs",
