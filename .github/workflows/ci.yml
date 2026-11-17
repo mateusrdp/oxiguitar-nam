@@ -30,9 +30,10 @@ env:
   # (e.g. libasound2-dev). Empty: none.
   APT_PACKAGES: ""
   # The MIDI plugin this one needs, built from this tag or branch of
-  # mateusrdp/oxiguitar-midi for the tests (scripts/midi.sh). Raised to the
-  # tag of the release this one needs once it exists.
-  MIDI_REF: develop
+  # mateusrdp/oxiguitar-midi for the tests (scripts/midi.sh). The last tag
+  # this plugin's OxiGuitar (v0.20.0, interface 1.8) can load: MIDI 0.2.5
+  # needs interface 1.9. Raised when this plugin moves to a newer OxiGuitar.
+  MIDI_REF: v0.2.4
 
 jobs:
   rust:
