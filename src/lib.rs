@@ -27,8 +27,7 @@ use std::time::SystemTime;
 
 use oxiguitar_plugin::audio::PrepareEffect;
 use oxiguitar_plugin::{
-    Advice, Effect, Error, ErrorKind, Host, Link, Plugin, Processor, SharedFolder, TrackSection,
-    Update,
+    Advice, Effect, Error, ErrorKind, Host, Link, Plugin, Processor, TrackSection, Update,
 };
 
 #[cfg_attr(all(fast, not(test)), allow(dead_code))]
@@ -110,10 +109,14 @@ impl std::fmt::Debug for NamPlugin {
     }
 }
 
-/// The `nam` folder, as the host hands it over.
+/// The name of the folder the plugin shares with the user (the
+/// manifest's `folders`), where amp models and cabinets go.
+pub(crate) const FOLDER: &str = "nam";
+
+/// The user's `nam` folder, asked for by its name (interface 1.8:
+/// OxiGuitar knows no folder's name).
 pub(crate) fn folder(host: &Host) -> Option<PathBuf> {
-    let folders = host.folders().ok()?;
-    folders.shared(SharedFolder::Nam).map(Path::to_path_buf)
+    host.folder(FOLDER).ok().map(|f| f.user)
 }
 
 fn failed(message: String) -> Error {
