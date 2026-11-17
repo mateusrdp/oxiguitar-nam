@@ -6,6 +6,8 @@ follows [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+## [0.4.2] - 2026-11-17
+
 ### Changed
 
 - The `nam` folder is asked for by its name (`host.folder`, interface 1.8), as OxiGuitar no longer knows it (the core owns nothing of a plugin, OxiGuitar's ADR 0012; mateusrdp/oxiguitar#308 retires the folder names it knew). Nothing changes for users.
