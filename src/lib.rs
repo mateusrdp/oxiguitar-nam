@@ -48,7 +48,7 @@ pub const EFFECT: &str = "nam";
 pub const SECTION: &str = "nam";
 
 /// The manual's page on amp models, which the section links to.
-pub const MANUAL: &str = "https://mateusrdp.github.io/oxiguitar/amp-models.html";
+pub const MANUAL: &str = "https://mateusrdp.github.io/oxiguitar-nam/use-cases.html#where-models-go";
 
 /// The advice that no amp model is in the nam folder.
 pub const ADVICE_NO_MODEL: &str = "no-model";

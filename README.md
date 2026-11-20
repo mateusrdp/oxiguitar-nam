@@ -1,12 +1,16 @@
 # oxiguitar-nam
 
-The NAM plugin for [OxiGuitar](https://github.com/mateusrdp/oxiguitar), a free, open-source guitar tablature viewer, editor and player: [Neural Amp Modeler](https://www.neuralampmodeler.com/) amp models and cabinet impulse responses on guitar and bass tracks, set in the track's Amp (NAM) section. Models (`.nam`) and impulse responses (`.wav`) are files you put in the `nam` folder; four cabinets are built in. The plugin needs the [MIDI plugin](https://github.com/mateusrdp/oxiguitar-midi) (`oxiguitar.midi`), which plays the track the amp is applied to.
+The NAM plugin for [OxiGuitar](https://github.com/mateusrdp/oxiguitar), a free, open-source guitar tablature viewer, editor and player: [Neural Amp Modeler](https://www.neuralampmodeler.com/) amp models and cabinet impulse responses on guitar and bass tracks, set in the track's Amp (NAM) section. Models (`.nam`) and impulse responses (`.wav`) are files you put in the `nam` folder; four cabinets are built in. The plugin needs the [MIDI plugin](https://mateusrdp.github.io/oxiguitar-midi/) (`oxiguitar.midi`), which plays the track the amp is applied to.
 
 The models and cabinets play through [NeuralAmpModeler-rs](https://github.com/fabiohl/NeuralAmpModeler-rs) wherever it builds, about ten times faster than [nam-rs](https://github.com/OpenSauce/nam-rs): on ARM64 under Linux, on Apple Silicon Macs, and on Linux x86_64 in a second file of the release, `nam-x86-64-v3.oxp`, built for processors with AVX2 and FMA, which OxiGuitar picks over `nam.oxp` where the processor has them. Elsewhere (Windows, Intel Macs, older x86_64 processors) nam-rs plays: NeuralAmpModeler-rs can't build there. Every build sounds the same.
 
+## Manual
+
+The manual is at <https://mateusrdp.github.io/oxiguitar-nam/>. Its source is in [docs/manual](docs/manual). It covers what the plugin is for, how it works, what it needs and how to install it.
+
 ## Install
 
-Every [release](https://github.com/mateusrdp/oxiguitar-nam/releases) holds a zip per system (Linux x86_64 and ARM64, Windows x86_64 and ARM64, macOS), a `.deb` and an `.rpm` for Linux, a per-user Windows installer (no administrator needed), a macOS `.pkg`, and a `SHA256SUMS` file. The OxiGuitar manual's [install page](https://mateusrdp.github.io/oxiguitar/installing.html) says which one to use and how to keep the plugin updated through your package manager. The plugin needs OxiGuitar 0.20.0 or later (plugin interface 1.8; its 0.3 releases work with 0.14 and later, its 0.2 releases with 0.11 and later), and the MIDI plugin. Its Input and Output work while the song plays.
+Every [release](https://github.com/mateusrdp/oxiguitar-nam/releases) holds a zip per system (Linux x86_64 and ARM64, Windows x86_64 and ARM64, macOS), a `.deb` and an `.rpm` for Linux, a per-user Windows installer (no administrator needed), a macOS `.pkg`, and a `SHA256SUMS` file. The [manual's install page](https://mateusrdp.github.io/oxiguitar-nam/install.html) says which one to use and how to keep it updated. The plugin needs OxiGuitar 0.20.0 or later (plugin interface 1.8; its 0.3 releases work with 0.14 and later, its 0.2 releases with 0.11 and later), and the MIDI plugin. Its Input and Output work while the song plays.
 
 ## Build and test
 
@@ -28,7 +32,7 @@ The build for x86-64-v3 processors needs Rust 1.99 and `RUSTFLAGS="-C target-cpu
 
 ## History
 
-This plugin lived in the [OxiGuitar repository](https://github.com/mateusrdp/oxiguitar) until its version 0.11.0. Its history came along; an issue number such as `mateusrdp/oxiguitar#123` in an old commit message is in that repository.
+This plugin lived in the OxiGuitar repository until its version 0.11.0. Its history came along; an issue number such as `mateusrdp/oxiguitar#123` in an old commit message is in that repository.
 
 ## Licence
 
