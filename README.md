@@ -19,6 +19,7 @@ Rust 1.99 or later from [rustup](https://rustup.rs). The plugin SDK comes from O
 ```sh
 cargo test          # unit tests, and the contract suite on the built .oxp file
 ./build-oxp.sh      # dist/nam-VERSION-SYSTEM-ARCH.oxp
+python3 scripts/test-all.py   # every test, as the manual's Testing page says
 ```
 
 The tests need the MIDI plugin's file. `scripts/midi.sh` puts the latest release's at `target/midi/midi.oxp` (the release's zip, checked against its `SHA256SUMS`; `scripts/midi.sh REF` builds a tag or branch instead), or point `OXIGUITAR_MIDI_OXP` at one:
