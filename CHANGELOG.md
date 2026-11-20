@@ -6,6 +6,10 @@ follows [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+### Changed
+
+- **The manual is the plugin's own** (OxiGuitar #325): `docs/manual`, published at https://mateusrdp.github.io/oxiguitar-nam/. The advice dialogs link to its page on where models go instead of a page of OxiGuitar's.
+
 ## [0.4.2] - 2026-11-17
 
 ### Changed
