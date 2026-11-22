@@ -504,3 +504,54 @@ mod tests {
         }
     }
 }
+
+#[cfg(test)]
+mod advice {
+    use std::sync::{Arc, Mutex};
+
+    use oxiguitar_plugin::api::message::{HostAnswer, HostRequest};
+    use oxiguitar_plugin::{HostServices, Plugin};
+
+    use super::*;
+
+    /// A host that keeps the ids of the advice it is asked to show.
+    #[derive(Default)]
+    struct Advised(Mutex<Vec<String>>);
+
+    impl HostServices for Advised {
+        fn request(&self, request: HostRequest<'_>) -> Result<HostAnswer<'static>, Error> {
+            if let HostRequest::Advise(a) = request {
+                assert!(a.links.iter().all(|l| l.url == MANUAL), "{:?}", a.links);
+                self.0.lock().unwrap().push(a.id);
+            }
+            Ok(HostAnswer::Done)
+        }
+    }
+
+    fn advised(models: &[&str], responses: &[&str], includes_cab: Option<bool>) -> Vec<String> {
+        let host = Arc::new(Advised::default());
+        let plugin = NamPlugin::start(Host::new(host.clone())).unwrap();
+        let found = files::Found {
+            models: models.iter().map(|s| (*s).to_owned()).collect(),
+            responses: responses.iter().map(|s| (*s).to_owned()).collect(),
+        };
+        plugin.advise_files(&found, includes_cab);
+        host.0.lock().unwrap().clone()
+    }
+
+    /// An empty nam folder is said, models and cabinets each on its own and
+    /// linking the manual; a model with its own cabinet needs none; a full
+    /// folder says nothing. (Saying it once is the host's: it keeps what the
+    /// user silenced.)
+    #[test]
+    fn what_the_nam_folder_lacks_is_advised() {
+        assert_eq!(
+            advised(&[], &[], None),
+            [ADVICE_NO_MODEL, ADVICE_NO_CABINET]
+        );
+        assert_eq!(advised(&["a.nam"], &[], None), [ADVICE_NO_CABINET]);
+        assert!(advised(&["a.nam"], &[], Some(true)).is_empty());
+        assert_eq!(advised(&[], &["4x12.wav"], Some(false)), [ADVICE_NO_MODEL]);
+        assert!(advised(&["a.nam"], &["4x12.wav"], None).is_empty());
+    }
+}

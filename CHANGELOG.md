@@ -6,9 +6,17 @@ follows [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+### Added
+
+- **Every test with one command** (mateusrdp/oxiguitar#273): `scripts/test-all.py` builds and runs all of this repository's tests, and tests the plugin against the newest OxiGuitar release, with a progress bar, a summary to paste into an issue and a log to diagnose from. The manual has a Features page naming the tests of every feature (CI checks it) and a Testing page.
+
 ### Changed
 
 - **The manual is the plugin's own** (OxiGuitar #325): `docs/manual`, published at https://mateusrdp.github.io/oxiguitar-nam/. The advice dialogs link to its page on where models go instead of a page of OxiGuitar's.
+
+### Fixed
+
+- `scripts/midi.sh` with no ref fetches the newest MIDI release again: it asked for `releases/latest`, which answers 404 while every release is a pre-release, and looked in the zip for `midi.oxp`, which is named `midi-VERSION-SYSTEM-ARCH.oxp`.
 
 ## [0.4.2] - 2026-11-17
 

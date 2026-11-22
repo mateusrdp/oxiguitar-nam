@@ -1,0 +1,30 @@
+{
+  "repository": "mateusrdp/oxiguitar-nam",
+  "setup": [
+    {
+      "name": "the MIDI plugin",
+      "run": [
+        "bash",
+        "scripts/midi.sh",
+        "v0.2.4"
+      ],
+      "needs": [
+        "bash",
+        "git",
+        "cargo"
+      ],
+      "env_from_stdout": "OXIGUITAR_MIDI_OXP",
+      "doc": "first, the MIDI plugin this one needs: `scripts/midi.sh v0.2.4` builds that release of oxiguitar-midi (the one CI's `MIDI_REF` names: the newest this plugin's OxiGuitar version can load)"
+    }
+  ],
+  "plugins": [
+    {
+      "name": "nam",
+      "package": "oxiguitar-nam-plugin",
+      "library": "oxiguitar_nam_plugin",
+      "with": [
+        "OXIGUITAR_MIDI_OXP"
+      ]
+    }
+  ]
+}
