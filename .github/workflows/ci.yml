@@ -75,8 +75,8 @@ jobs:
           components: clippy
       - uses: Swatinem/rust-cache@v2
       - if: env.APT_PACKAGES != ''
-        run: sudo apt-get update && sudo apt-get install -y --no-install-recommends $APT_PACKAGES
-        timeout-minutes: 15
+        run: scripts/apt-install.sh $APT_PACKAGES
+        timeout-minutes: 60
       # The feature x86-64-v3 builds only with RUSTFLAGS="-C target-cpu=x86-64-v3"
       # (the "NAM for x86-64-v3" job lints it), so not --all-features.
       - name: Clippy
@@ -117,8 +117,8 @@ jobs:
         with:
           key: ${{ matrix.toolchain }}
       - if: runner.os == 'Linux' && env.APT_PACKAGES != ''
-        run: sudo apt-get update && sudo apt-get install -y --no-install-recommends $APT_PACKAGES
-        timeout-minutes: 15
+        run: scripts/apt-install.sh $APT_PACKAGES
+        timeout-minutes: 60
       - name: The MIDI plugin this one needs
         shell: bash
         run: echo "OXIGUITAR_MIDI_OXP=$(scripts/midi.sh "$MIDI_REF")" >> "$GITHUB_ENV"
