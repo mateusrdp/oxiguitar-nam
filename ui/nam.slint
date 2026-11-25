@@ -10,7 +10,7 @@ import { CheckBox, ComboBox, Palette, Slider } from "std-widgets.slint";
 
 component Level {
     in property <string> title;
-    in property <float> value;
+    in-out property <float> value;
     in property <float> minimum;
     in property <float> maximum;
     callback slid(float);
@@ -24,7 +24,7 @@ component Level {
         Slider {
             minimum: root.minimum;
             maximum: root.maximum;
-            value: root.value;
+            value <=> root.value;
             released(v) => { root.slid(v); }
         }
         Text {
@@ -40,7 +40,7 @@ component Level {
 component Choice {
     in property <string> title;
     in property <[string]> options;
-    in property <int> picked;
+    in-out property <int> picked;
     in property <bool> enabled: true;
     callback chosen(int);
     HorizontalLayout {
@@ -52,7 +52,7 @@ component Choice {
         }
         ComboBox {
             model: root.options;
-            current-index: root.picked;
+            current-index <=> root.picked;
             enabled: root.enabled;
             selected => { root.chosen(self.current-index); }
         }
@@ -60,15 +60,15 @@ component Choice {
 }
 
 export component NamSection {
-    in property <bool> on;
+    in-out property <bool> on;
     in property <[string]> models;
-    in property <int> model;
+    in-out property <int> model;
     in property <bool> can-pick-model;
     in property <string> hint;
     in property <[string]> cabinets;
-    in property <int> cabinet;
-    in property <float> input;
-    in property <float> output;
+    in-out property <int> cabinet;
+    in-out property <float> input;
+    in-out property <float> output;
     in property <float> minimum: -24;
     in property <float> maximum: 24;
     in property <bool> no-models;
@@ -84,13 +84,13 @@ export component NamSection {
         spacing: 6px;
         CheckBox {
             text: "Play this track through an amp model";
-            checked: root.on;
+            checked <=> root.on;
             toggled => { root.switched(self.checked); }
         }
         Choice {
             title: "Model";
             options: root.models;
-            picked: root.model;
+            picked <=> root.model;
             enabled: root.can-pick-model;
             chosen(i) => { root.model-chosen(i); }
         }
@@ -102,19 +102,19 @@ export component NamSection {
         Choice {
             title: "Cabinet";
             options: root.cabinets;
-            picked: root.cabinet;
+            picked <=> root.cabinet;
             chosen(i) => { root.cabinet-chosen(i); }
         }
         Level {
             title: "Input";
-            value: root.input;
+            value <=> root.input;
             minimum: root.minimum;
             maximum: root.maximum;
             slid(v) => { root.input-slid(v); }
         }
         Level {
             title: "Output";
-            value: root.output;
+            value <=> root.output;
             minimum: root.minimum;
             maximum: root.maximum;
             slid(v) => { root.output-slid(v); }
