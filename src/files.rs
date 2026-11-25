@@ -104,4 +104,23 @@ mod tests {
             assert_eq!(resolve(root, bad), None, "{bad}");
         }
     }
+
+    /// The nam folder and four folders below it are looked into, no
+    /// deeper, so a stray deep tree doesn't slow the start.
+    #[test]
+    fn folders_are_looked_into_five_deep_and_no_deeper() {
+        let dir = std::env::temp_dir().join(format!("oxiguitar-nam-depth-{}", std::process::id()));
+        let _ = std::fs::remove_dir_all(&dir);
+        let mut at = dir.clone();
+        for level in 0..6 {
+            std::fs::create_dir_all(&at).unwrap();
+            std::fs::write(at.join(format!("amp{level}.nam")), "{}").unwrap();
+            at = at.join(format!("d{level}"));
+        }
+        let f = find(&dir);
+        assert_eq!(f.models.len(), DEPTH, "{:?}", f.models);
+        assert!(f.models.iter().all(|m| !m.ends_with("amp5.nam")));
+        assert!(f.models.contains(&"d0/d1/d2/d3/amp4.nam".to_owned()));
+        let _ = std::fs::remove_dir_all(&dir);
+    }
 }

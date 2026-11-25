@@ -39,15 +39,29 @@ if [[ -n "$ref" ]]; then
     work="$(mktemp -d)"
     trap 'rm -rf "$work"' EXIT
     git clone --quiet --depth 1 --branch "$ref" https://github.com/mateusrdp/oxiguitar-midi "$work/midi"
-    (cd "$work/midi" && cargo rustc --locked --release --features oxp --crate-type cdylib > /dev/null)
+    # scripts/test-all.py --ignore-rust-version sets OXIGUITAR_IGNORE_RUST_VERSION.
+    flags=()
+    [[ -n "${OXIGUITAR_IGNORE_RUST_VERSION:-}" ]] && flags+=(--ignore-rust-version)
+    (cd "$work/midi" && cargo rustc --locked --release --features oxp --crate-type cdylib ${flags[@]+"${flags[@]}"} > /dev/null)
     case "$system" in
-        linux) cp "$work/midi/target/release/liboxiguitar_midi_plugin.so" "$dest/midi.oxp" ;;
-        macos) cp "$work/midi/target/release/liboxiguitar_midi_plugin.dylib" "$dest/midi.oxp" ;;
-        *) cp "$work/midi/target/release/oxiguitar_midi_plugin.dll" "$dest/midi.oxp" ;;
+        linux) library="$work/midi/target/release/liboxiguitar_midi_plugin.so" ;;
+        macos) library="$work/midi/target/release/liboxiguitar_midi_plugin.dylib" ;;
+        *) library="$work/midi/target/release/oxiguitar_midi_plugin.dll" ;;
     esac
+    # A plugin file is a tar archive (mateusrdp/oxiguitar#347): the
+    # manifest first, the library second, as build-oxp.sh packs this one.
+    mkdir "$work/stage"
+    cp "$work/midi/manifest.json" "$work/stage/manifest.json"
+    cp "$library" "$work/stage/plugin.${library##*.}"
+    (cd "$work/stage" && COPYFILE_DISABLE=1 tar --format=ustar -cf - manifest.json "plugin.${library##*.}") > "$dest/midi.oxp"
 else
-    release="$(curl -fsSL --retry 5 https://api.github.com/repos/mateusrdp/oxiguitar-midi/releases/latest)"
-    tag="$(python3 -c 'import json,sys; print(json.load(sys.stdin)["tag_name"])' <<< "$release")"
+    # Every release is a pre-release until v1.0, and releases/latest
+    # answers 404 for those: take the newest published one.
+    releases="$(curl -fsSL --retry 5 "https://api.github.com/repos/mateusrdp/oxiguitar-midi/releases?per_page=20")"
+    tag="$(python3 -c '
+import json, re, sys
+tags = [r["tag_name"] for r in json.load(sys.stdin) if not r.get("draft")]
+print(max(tags, key=lambda t: tuple(int(n) for n in re.findall(r"\d+", t)[:3])))' <<< "$releases")"
     version="${tag#v}"
     zip="oxiguitar-midi-$version-$target.zip"
     base="https://github.com/mateusrdp/oxiguitar-midi/releases/download/$tag"
@@ -59,8 +73,16 @@ else
     python3 - "$dest/$zip" "$dest/midi.oxp" <<'PY'
 import sys, zipfile
 with zipfile.ZipFile(sys.argv[1]) as z:
-    open(sys.argv[2], "wb").write(z.read("midi.oxp"))
+    # The zip holds one plugin file, named midi-VERSION-SYSTEM-ARCH.oxp.
+    (name,) = [n for n in z.namelist() if n.endswith(".oxp")]
+    open(sys.argv[2], "wb").write(z.read(name))
 PY
     echo "oxiguitar-midi $version" >&2
+    # A release from before OxiGuitar 0.23 holds the library alone, which
+    # OxiGuitar no longer loads (mateusrdp/oxiguitar#347).
+    if [[ "$(dd if="$dest/midi.oxp" bs=1 skip=257 count=5 2> /dev/null)" != ustar ]]; then
+        echo "oxiguitar-midi $version's file is of the format before OxiGuitar 0.23: build a tag instead (scripts/midi.sh v0.2.6)" >&2
+        exit 1
+    fi
 fi
 echo "$dest/midi.oxp"

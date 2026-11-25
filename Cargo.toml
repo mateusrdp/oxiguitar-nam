@@ -1,7 +1,7 @@
 [package]
 name = "oxiguitar-nam-plugin"
 description = "The OxiGuitar NAM plugin: amp models (Neural Amp Modeler captures) and cabinet impulse responses on guitar and bass tracks, set in the track dialog."
-version = "0.4.2"
+version = "0.5.0"
 edition = "2024"
 # Rust from rustup, raised only when something needs it (CONTRIBUTING.md).
 rust-version = "1.99"
@@ -30,7 +30,9 @@ x86-64-v3 = ["dep:NeuralAmpModeler-rs"]
 [dependencies]
 # The SDK, from OxiGuitar's repository at the tag of OxiGuitar 0.20.0, the
 # first release with interface 1.8. Nothing of OxiGuitar's is on crates.io.
-oxiguitar-plugin = { git = "https://github.com/mateusrdp/oxiguitar", tag = "v0.20.0" }
+# Now at v0.23.0 (plugin interface 1.16; plugin files are tar archives,
+# mateusrdp/oxiguitar#347).
+oxiguitar-plugin = { git = "https://github.com/mateusrdp/oxiguitar", tag = "v0.23.0" }
 rustfft = "6.4.1"
 
 # The engine (src/engine.rs): NeuralAmpModeler-rs wherever it builds, nam-rs
@@ -75,8 +77,8 @@ todo = "warn"
 nam-rs = "0.4.0"
 # tests/host.rs builds the .oxp file and checks it through OxiGuitar's own
 # plugin host, as the app would load it.
-oxiguitar-plugin-test = { git = "https://github.com/mateusrdp/oxiguitar", tag = "v0.20.0" }
-oxiguitar-host = { git = "https://github.com/mateusrdp/oxiguitar", tag = "v0.20.0" }
+oxiguitar-plugin-test = { git = "https://github.com/mateusrdp/oxiguitar", tag = "v0.23.0" }
+oxiguitar-host = { git = "https://github.com/mateusrdp/oxiguitar", tag = "v0.23.0" }
 
 [profile.release]
 # Small files. Keep the default `panic = "unwind"`: a panic is then caught

@@ -82,7 +82,7 @@ fn nam_plugins_of(files: &[(PathBuf, String)], tag: &str) -> (Plugins, PathBuf) 
     let plugins = Plugins::discover(
         &[folder],
         SharedSettings::default(),
-        oxiguitar_host::display_system(),
+        oxiguitar_host::NO_DISPLAY,
         Arc::new(Unheard),
     );
     let folders = oxiguitar_host::Folders::resolve(

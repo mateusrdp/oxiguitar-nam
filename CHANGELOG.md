@@ -6,9 +6,25 @@ follows [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+## [0.5.0] - 2026-11-25
+
 ### Changed
 
+- **The plugin file is a tar archive** (mateusrdp/oxiguitar#347): `build-oxp.sh` packs `manifest.json` first and the library second (`plugin.so`, `plugin.dll` or `plugin.dylib`), as OxiGuitar 0.23 and later read plugin files, which older OxiGuitars can't load. The SDK is at OxiGuitar v0.23.0 (interface 1.16); the host test names no display system (`NO_DISPLAY`), as the SDK now has it. The x86-64-v3 build is packed with `manifest-x86-64-v3.json`. `scripts/midi.sh` packs the MIDI plugin it builds as an archive too, and refuses a release of the format before; the tests take MIDI 0.2.6 (`MIDI_REF`), since 0.2.4 misses this SDK's real-time check on its notes' start. `scripts/test-all.py` 1.1.0, as in every repository.
+
+### Added
+
+- **Every test with one command** (mateusrdp/oxiguitar#273): `scripts/test-all.py` builds and runs all of this repository's tests, and tests the plugin against the newest OxiGuitar release, with a progress bar, a summary to paste into an issue and a log to diagnose from. The manual has a Features page naming the tests of every feature (CI checks it) and a Testing page.
+
+### Changed
+
+- **CI outlasts a slow Ubuntu mirror**: it installs packages with `scripts/apt-install.sh`, the same file as in every OxiGuitar repository. apt is stopped only when its downloads have not grown for 2 minutes, then tried again on the next mirror; while they grow, it may take as long as it needs (24 Nov 2026: fixed 5-minute tries failed jobs on mirrors at 80 to 185 kB/s).
 - **The manual is the plugin's own** (OxiGuitar #325): `docs/manual`, published at https://mateusrdp.github.io/oxiguitar-nam/. The advice dialogs link to its page on where models go instead of a page of OxiGuitar's.
+- **The manual explains the ideas behind the plugin** (its overview, with pictures), shows how to use it with screenshots, says in Architecture and strategy what it can't do yet, what is left out on purpose and where help is wanted, and has a Credits page listing every project it uses, with links and thanks. The README has a plain-words introduction and a Credits section.
+
+### Fixed
+
+- `scripts/midi.sh` with no ref fetches the newest MIDI release again: it asked for `releases/latest`, which answers 404 while every release is a pre-release, and looked in the zip for `midi.oxp`, which is named `midi-VERSION-SYSTEM-ARCH.oxp`.
 
 ## [0.4.2] - 2026-11-17
 
