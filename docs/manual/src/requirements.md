@@ -2,7 +2,7 @@
 
 ## Requirements
 
-- OxiGuitar 0.20 or later (plugin interface 1.8). See [the OxiGuitar manual](https://mateusrdp.github.io/oxiguitar/).
+- OxiGuitar 0.23 or later (plugin interface 1.16). Version 0.4 of the plugin works with OxiGuitar 0.20 and later. See [the OxiGuitar manual](https://mateusrdp.github.io/oxiguitar/).
 - The MIDI plugin, installed. OxiGuitar won't use this plugin without it. See [its manual](https://mateusrdp.github.io/oxiguitar-midi/).
 - Windows, macOS or Linux.
 - A computer with room to spare. If playback stutters, use the amp on fewer tracks or pick lighter models, labelled "lite", "feather" or "nano".

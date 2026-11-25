@@ -1,29 +1,37 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 // Copyright (C) 2026 Mateus Rocha de Paula and the OxiGuitar contributors
 
-//! The track dialog's section "Amp (NAM)", for guitars and basses: NAM on
+//! The Track tab's section "Amp (NAM)", for guitars and basses: NAM on
 //! or off, the model, the cabinet, and the levels before and after. While
 //! the amp is on, a hint under the model says how to feed it a clean
 //! guitar (mateusrdp/oxiguitar#152): the MIDI plugin's section Sound,
 //! "Like clean guitars". The section can't see that section's settings
 //! (each plugin gets only its own), so the hint says what to do rather
-//! than checking it.
+//! than checking it. Drawn by `ui/nam.slint` (plugin interface 1.16); this
+//! side sets its properties and changes the track's settings.
 
-use oxiguitar_plugin::serde_json::{Map, Value};
-use oxiguitar_plugin::{Error, Host, Row, TabContent, TabEvent, TrackInfo, TrackSection, Widget};
+use std::sync::Mutex;
+
+use oxiguitar_plugin::serde_json::{Map, Value as Json};
+use oxiguitar_plugin::{Error, Host, TrackView, Ui, Value};
 
 use crate::files::{self, Found};
 use crate::settings::{Cabinet, LEVELS, Track};
 
-/// The section.
+/// The section's side in the plugin: the track's settings as the Track
+/// tab holds them.
 #[derive(Debug)]
 pub(crate) struct Section {
     host: Host,
+    settings: Mutex<Map<String, Json>>,
 }
 
 impl Section {
     pub(crate) fn new(host: Host) -> Section {
-        Section { host }
+        Section {
+            host,
+            settings: Mutex::new(Map::new()),
+        }
     }
 
     fn found(&self) -> (Option<std::path::PathBuf>, Found) {
@@ -53,12 +61,10 @@ fn models(found: &Found, track: &Track) -> (Vec<String>, u32, usize) {
     (options, picked as u32, start)
 }
 
-/// The hint shown under the model while the amp is on, a line per row
-/// (labels don't wrap): the MIDI plugin's section and choice, by name.
-pub(crate) const CLEAN_HINT: [&str; 2] = [
-    "For a clean guitar into the amp, set this",
-    "track's Sound to \"Like clean guitars\".",
-];
+/// The hint shown under the model while the amp is on: the MIDI plugin's
+/// section and choice, by name.
+pub(crate) const CLEAN_HINT: &str =
+    "For a clean guitar into the amp, set this track's Sound to \"Like clean guitars\".";
 
 /// The cabinet choice's lines and what each picks.
 fn cabinets(found: &Found) -> Vec<(String, Cabinet)> {
@@ -78,155 +84,158 @@ fn cabinets(found: &Found) -> Vec<(String, Cabinet)> {
     out
 }
 
-fn label(text: impl Into<String>, muted: bool) -> Widget {
-    Widget::Label {
-        text: text.into(),
-        muted,
-    }
+fn strings(lines: Vec<String>) -> Value {
+    Value::List(lines.into_iter().map(Value::String).collect())
 }
 
-fn level_row(title: &str, id: &str, value: f32) -> Row {
-    Row {
-        widgets: vec![
-            label(title, false),
-            Widget::Slider {
-                id: id.into(),
-                value,
-                min: LEVELS.0,
-                max: LEVELS.1,
-                enabled: true,
-            },
-            label(format!("{value:+.1} dB"), true),
-        ],
-    }
-}
-
-impl TrackSection for Section {
-    fn content(&self, _track: &TrackInfo, settings: &Map<String, Value>) -> TabContent {
-        let t = Track::from_map(settings);
-        let (folder, found) = self.found();
-        let (model_options, model_picked, _) = models(&found, &t);
-        let cabs = cabinets(&found);
-        // A file no longer there (or a built-in one a later version
-        // dropped) is shown as picked, at the end.
-        let cab_picked = cabs
-            .iter()
-            .position(|(_, c)| *c == t.cabinet)
-            .unwrap_or(cabs.len());
-        let mut cab_options: Vec<String> = cabs.into_iter().map(|(n, _)| n).collect();
-        if cab_picked == cab_options.len() {
-            cab_options.push(match &t.cabinet {
-                Cabinet::File(f) | Cabinet::BuiltIn(f) => format!("{f} (not found)"),
-                Cabinet::Auto | Cabinet::None => "?".into(),
-            });
-        }
-        let mut rows = vec![
-            Row {
-                widgets: vec![Widget::Toggle {
-                    id: "on".into(),
-                    text: "Play this track through an amp model".into(),
-                    on: t.on,
-                    enabled: true,
-                }],
-            },
-            Row {
-                widgets: vec![
-                    label("Model", false),
-                    Widget::Choice {
-                        id: "model".into(),
-                        options: model_options,
-                        selected: model_picked,
-                        enabled: !found.models.is_empty() || t.model.is_some(),
-                    },
-                ],
-            },
-        ];
-        if t.on {
-            for line in CLEAN_HINT {
-                rows.push(Row {
-                    widgets: vec![label(line, true)],
-                });
-            }
-        }
-        rows.extend([
-            Row {
-                widgets: vec![
-                    label("Cabinet", false),
-                    Widget::Choice {
-                        id: "cabinet".into(),
-                        options: cab_options,
-                        selected: cab_picked as u32,
-                        enabled: true,
-                    },
-                ],
-            },
-            level_row("Input", "input", t.input),
-            level_row("Output", "output", t.output),
-        ]);
-        if found.models.is_empty() {
-            rows.push(Row {
-                widgets: vec![label("No amp models found yet.", false)],
-            });
-        }
-        rows.push(Row {
-            widgets: vec![label(
-                "Put .nam models and .wav cabinet responses in:",
-                true,
-            )],
+/// The section's properties for a track whose settings are `settings`,
+/// with the models and responses `found` in `folder`.
+pub(crate) fn properties(
+    settings: &Map<String, Json>,
+    folder: Option<&std::path::Path>,
+    found: &Found,
+) -> Vec<(String, Value)> {
+    let t = Track::from_map(settings);
+    let (model_options, model_picked, _) = models(found, &t);
+    let cabs = cabinets(found);
+    // A file no longer there (or a built-in one a later version dropped)
+    // is shown as picked, at the end.
+    let cab_picked = cabs
+        .iter()
+        .position(|(_, c)| *c == t.cabinet)
+        .unwrap_or(cabs.len());
+    let mut cab_options: Vec<String> = cabs.into_iter().map(|(n, _)| n).collect();
+    if cab_picked == cab_options.len() {
+        cab_options.push(match &t.cabinet {
+            Cabinet::File(f) | Cabinet::BuiltIn(f) => format!("{f} (not found)"),
+            Cabinet::Auto | Cabinet::None => "?".into(),
         });
-        rows.push(Row {
-            widgets: vec![label(
+    }
+    vec![
+        ("on".into(), Value::Bool(t.on)),
+        ("models".into(), strings(model_options)),
+        ("model".into(), Value::Number(f64::from(model_picked))),
+        (
+            "can-pick-model".into(),
+            Value::Bool(!found.models.is_empty() || t.model.is_some()),
+        ),
+        ("hint".into(), Value::String(CLEAN_HINT.into())),
+        ("cabinets".into(), strings(cab_options)),
+        ("cabinet".into(), Value::Number(cab_picked as f64)),
+        ("input".into(), Value::Number(f64::from(t.input))),
+        ("output".into(), Value::Number(f64::from(t.output))),
+        ("minimum".into(), Value::Number(f64::from(LEVELS.0))),
+        ("maximum".into(), Value::Number(f64::from(LEVELS.1))),
+        ("no-models".into(), Value::Bool(found.models.is_empty())),
+        (
+            "folder".into(),
+            Value::String(
                 folder.map_or_else(|| "the nam folder".to_owned(), |f| f.display().to_string()),
-                true,
-            )],
-        });
-        rows.push(Row {
-            widgets: vec![Widget::Link {
-                text: "Amp models: where to get them, and a guitar sound for them".into(),
-                url: crate::MANUAL.into(),
-            }],
-        });
-        TabContent { rows }
+            ),
+        ),
+    ]
+}
+
+fn number(args: &[Value]) -> Option<f64> {
+    match args.first() {
+        Some(Value::Number(n)) if n.is_finite() => Some(*n),
+        _ => None,
+    }
+}
+
+fn index(args: &[Value]) -> Option<usize> {
+    number(args)
+        .filter(|i| *i >= 0.0 && i.fract() == 0.0)
+        .map(|i| i as usize)
+}
+
+/// Changes `settings` for the section's callback `callback` with `args`,
+/// with the models and responses `found`; false when it changes nothing.
+pub(crate) fn change(
+    settings: &mut Map<String, Json>,
+    found: &Found,
+    callback: &str,
+    args: &[Value],
+) -> bool {
+    let mut t = Track::from_map(settings);
+    match (callback, args.first()) {
+        ("switched", Some(Value::Bool(on))) => t.on = *on,
+        ("model-chosen", _) => {
+            let Some(i) = index(args) else {
+                return false;
+            };
+            let (_, _, start) = models(found, &t);
+            if i == 0 {
+                t.model = None;
+            } else if let Some(m) = i.checked_sub(start).and_then(|k| found.models.get(k)) {
+                t.model = Some(m.clone());
+                // Picking a model is wanting to hear it.
+                t.on = true;
+            } else {
+                // The missing file's line: left as it is.
+                return false;
+            }
+        }
+        ("cabinet-chosen", _) => {
+            match index(args).and_then(|i| cabinets(found).into_iter().nth(i)) {
+                Some((_, c)) => t.cabinet = c,
+                None => return false,
+            }
+        }
+        ("input-slid", _) | ("output-slid", _) => {
+            let Some(v) = number(args) else {
+                return false;
+            };
+            let v = (((v * 2.0).round() / 2.0) as f32).clamp(LEVELS.0, LEVELS.1);
+            if callback == "input-slid" {
+                t.input = v;
+            } else {
+                t.output = v;
+            }
+        }
+        _ => return false,
+    }
+    t.input = t.input.clamp(LEVELS.0, LEVELS.1);
+    t.output = t.output.clamp(LEVELS.0, LEVELS.1);
+    t.write(settings);
+    true
+}
+
+impl Ui for Section {
+    fn shown(&self, view: &str, track: Option<&TrackView>) -> Result<(), Error> {
+        if view != crate::SECTION {
+            return Ok(());
+        }
+        let settings: Map<String, Json> = track
+            .and_then(|t| oxiguitar_plugin::serde_json::from_str(&t.settings).ok())
+            .unwrap_or_default();
+        let (folder, found) = self.found();
+        let properties = properties(&settings, folder.as_deref(), &found);
+        *self.settings.lock().unwrap_or_else(|e| e.into_inner()) = settings;
+        self.host.set_view(crate::SECTION, properties)
     }
 
-    fn on(
-        &self,
-        _track: &TrackInfo,
-        settings: &mut Map<String, Value>,
-        widget: &str,
-        event: TabEvent,
-    ) -> Result<(), Error> {
-        let mut t = Track::from_map(settings);
-        let (_, found) = self.found();
-        match (widget, event) {
-            ("on", TabEvent::Toggled(on)) => t.on = on,
-            ("model", TabEvent::Chosen(i)) => {
-                let (_, _, start) = models(&found, &t);
-                let i = i as usize;
-                if i == 0 {
-                    t.model = None;
-                } else if let Some(m) = i.checked_sub(start).and_then(|k| found.models.get(k)) {
-                    t.model = Some(m.clone());
-                    // Picking a model is wanting to hear it.
-                    t.on = true;
-                } else {
-                    // The missing file's line: left as it is.
-                    return Ok(());
-                }
-            }
-            ("cabinet", TabEvent::Chosen(i)) => {
-                if let Some((_, c)) = cabinets(&found).into_iter().nth(i as usize) {
-                    t.cabinet = c;
-                }
-            }
-            ("input", TabEvent::Slid(v)) => t.input = (v * 2.0).round() / 2.0,
-            ("output", TabEvent::Slid(v)) => t.output = (v * 2.0).round() / 2.0,
-            _ => return Ok(()),
+    fn callback(&self, view: &str, callback: &str, args: Vec<Value>) -> Result<(), Error> {
+        if view != crate::SECTION {
+            return Ok(());
         }
-        t.input = t.input.clamp(LEVELS.0, LEVELS.1);
-        t.output = t.output.clamp(LEVELS.0, LEVELS.1);
-        t.write(settings);
-        Ok(())
+        if callback == "manual" {
+            return crate::links::open(crate::MANUAL)
+                .map_err(|why| Error::new(oxiguitar_plugin::ErrorKind::Failed, why));
+        }
+        let (folder, found) = self.found();
+        let settings = {
+            let mut settings = self.settings.lock().unwrap_or_else(|e| e.into_inner());
+            if !change(&mut settings, &found, callback, &args) {
+                return Ok(());
+            }
+            settings.clone()
+        };
+        self.host.set_track_settings(crate::SECTION, &settings)?;
+        self.host.set_view(
+            crate::SECTION,
+            properties(&settings, folder.as_deref(), &found),
+        )
     }
 }
 
@@ -262,52 +271,117 @@ mod tests {
         assert_eq!(cabs.last().unwrap().1, Cabinet::File("4x12.wav".into()));
     }
 
-    fn texts(content: &TabContent) -> Vec<String> {
-        content
-            .rows
-            .iter()
-            .flat_map(|r| &r.widgets)
-            .filter_map(|w| match w {
-                Widget::Label { text, .. } => Some(text.clone()),
-                _ => None,
-            })
-            .collect()
+    fn get<'a>(p: &'a [(String, Value)], name: &str) -> &'a Value {
+        &p.iter().find(|(n, _)| n == name).unwrap().1
     }
 
-    /// While the amp is on, the hint stands right under the model;
-    /// off, it isn't shown.
+    /// The hint shows while the amp is on (the file shows it then).
     #[test]
-    fn the_clean_guitar_hint_shows_under_the_model_while_the_amp_is_on() {
-        use oxiguitar_plugin::InstrumentClass;
-        use oxiguitar_plugin::serde_json::json;
+    fn the_clean_guitar_hint_shows_while_the_amp_is_on() {
+        let found = Found::default();
+        let mut settings = Map::new();
+        assert_eq!(
+            get(&properties(&settings, None, &found), "on"),
+            &Value::Bool(false)
+        );
+        assert!(change(
+            &mut settings,
+            &found,
+            "switched",
+            &[Value::Bool(true)]
+        ));
+        let p = properties(&settings, None, &found);
+        assert_eq!(get(&p, "on"), &Value::Bool(true));
+        assert!(matches!(get(&p, "hint"), Value::String(h) if h.contains("Like clean guitars")));
+        assert_eq!(get(&p, "no-models"), &Value::Bool(true));
+        assert_eq!(get(&p, "can-pick-model"), &Value::Bool(false));
+    }
 
-        let section = Section::new(Host::detached());
-        let track = TrackInfo {
-            index: 0,
-            name: "Rhythm".into(),
-            class: InstrumentClass::Fretted,
+    /// Picking a model turns the amp on; the levels go by half decibels
+    /// within their range; what is out of range changes nothing.
+    #[test]
+    fn the_section_picks_the_model_the_cabinet_and_the_levels() {
+        let found = Found {
+            models: vec!["a.nam".into(), "b.nam".into()],
+            responses: vec!["4x12.wav".into()],
         };
         let mut settings = Map::new();
-        let off = texts(&section.content(&track, &settings));
-        assert!(
-            !off.iter().any(|t| t.contains("Like clean guitars")),
-            "{off:?}"
+        assert!(change(
+            &mut settings,
+            &found,
+            "model-chosen",
+            &[Value::Number(2.0)]
+        ));
+        let t = Track::from_map(&settings);
+        assert_eq!((t.on, t.model.as_deref()), (true, Some("b.nam")));
+        let last = (cabinets(&found).len() - 1) as f64;
+        assert!(change(
+            &mut settings,
+            &found,
+            "cabinet-chosen",
+            &[Value::Number(last)]
+        ));
+        assert_eq!(
+            Track::from_map(&settings).cabinet,
+            Cabinet::File("4x12.wav".into())
         );
-        settings.insert("on".into(), json!(true));
-        let content = section.content(&track, &settings);
-        let model = content
-            .rows
+        assert!(change(
+            &mut settings,
+            &found,
+            "input-slid",
+            &[Value::Number(3.3)]
+        ));
+        assert!(change(
+            &mut settings,
+            &found,
+            "output-slid",
+            &[Value::Number(-99.0)]
+        ));
+        let t = Track::from_map(&settings);
+        assert_eq!((t.input, t.output), (3.5, LEVELS.0));
+        let before = settings.clone();
+        assert!(!change(
+            &mut settings,
+            &found,
+            "cabinet-chosen",
+            &[Value::Number(99.0)]
+        ));
+        assert!(!change(
+            &mut settings,
+            &found,
+            "model-chosen",
+            &[Value::Number(-1.0)]
+        ));
+        assert!(!change(&mut settings, &found, "other", &[]));
+        assert_eq!(settings, before);
+        let p = properties(&settings, None, &found);
+        assert_eq!(get(&p, "model"), &Value::Number(2.0));
+        assert_eq!(get(&p, "cabinet"), &Value::Number(last));
+    }
+
+    /// The file compiles as OxiGuitar compiles it, with every property and
+    /// callback this side uses.
+    #[test]
+    fn the_slint_file_has_what_the_section_sets_and_hears() {
+        let file = std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join("ui/nam.slint");
+        let compiled = oxiguitar_plugin_test::compile_ui_file(&file).unwrap();
+        let c = compiled
+            .components
             .iter()
-            .position(
-                |r| matches!(&r.widgets[..], [Widget::Label { text, .. }, ..] if text == "Model"),
-            )
+            .find(|c| c.name == "NamSection")
             .unwrap();
-        for (k, line) in CLEAN_HINT.iter().enumerate() {
-            assert!(matches!(
-                &content.rows[model + 1 + k].widgets[..],
-                [Widget::Label { text, muted: true }] if text == line
-            ));
+        for (name, _) in properties(&Map::new(), None, &Found::default()) {
+            assert!(c.properties.contains(&name), "{name}");
         }
-        assert!(CLEAN_HINT.iter().all(|l| l.chars().count() <= 45));
+        for name in [
+            "switched",
+            "model-chosen",
+            "cabinet-chosen",
+            "input-slid",
+            "output-slid",
+            "manual",
+        ] {
+            assert!(c.callbacks.iter().any(|p| *p == name), "{name}");
+        }
     }
 }
