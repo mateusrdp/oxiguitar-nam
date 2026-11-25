@@ -2,7 +2,7 @@
 // Copyright (C) 2026 Mateus Rocha de Paula and the OxiGuitar contributors
 
 //! A track's NAM settings, kept per track beside the score (`FILE.oxg`,
-//! the track dialog's section):
+//! the Track tab's section):
 //!
 //! ```json
 //! {"on": true, "model": "Amps/Twin.nam", "cabinet": "built-in:mesa-boogie-mark-v",

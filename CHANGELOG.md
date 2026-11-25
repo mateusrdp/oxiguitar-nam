@@ -6,6 +6,12 @@ follows [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+## [0.6.0] - 2026-11-25
+
+### Changed
+
+- **The Amp (NAM) section is drawn in Slint** (mateusrdp/oxiguitar#346, plugin interface 1.16): `ui/nam.slint`, packed in the plugin file, which OxiGuitar runs with its own widgets, fonts and colours. Same choices as before; the clean-guitar hint is one line that wraps, and the plugin opens the manual's link in the browser itself (`https://` only). The plugin needs OxiGuitar 0.23.0 or later (it already did, since its plugin file is an archive); the README and the manual now say so.
+
 ## [0.5.0] - 2026-11-25
 
 ### Changed

@@ -12,11 +12,11 @@ The manual is at <https://mateusrdp.github.io/oxiguitar-nam/>. Its source is in 
 
 ## Install
 
-Every [release](https://github.com/mateusrdp/oxiguitar-nam/releases) holds a zip per system (Linux x86_64 and ARM64, Windows x86_64 and ARM64, macOS), a `.deb` and an `.rpm` for Linux, a per-user Windows installer (no administrator needed), a macOS `.pkg`, and a `SHA256SUMS` file. The [manual's install page](https://mateusrdp.github.io/oxiguitar-nam/install.html) says which one to use and how to keep it updated. The plugin needs OxiGuitar 0.20.0 or later (plugin interface 1.8; its 0.3 releases work with 0.14 and later, its 0.2 releases with 0.11 and later), and the MIDI plugin. Its Input and Output work while the song plays.
+Every [release](https://github.com/mateusrdp/oxiguitar-nam/releases) holds a zip per system (Linux x86_64 and ARM64, Windows x86_64 and ARM64, macOS), a `.deb` and an `.rpm` for Linux, a per-user Windows installer (no administrator needed), a macOS `.pkg`, and a `SHA256SUMS` file. The [manual's install page](https://mateusrdp.github.io/oxiguitar-nam/install.html) says which one to use and how to keep it updated. The plugin needs OxiGuitar 0.23.0 or later (plugin interface 1.16; its 0.4 releases work with 0.20 and later, its 0.3 releases with 0.14 and later, its 0.2 releases with 0.11 and later), and the MIDI plugin. Its Input and Output work while the song plays.
 
 ## Build and test
 
-Rust 1.99 or later from [rustup](https://rustup.rs). The plugin SDK comes from OxiGuitar's repository by git tag (`v0.14.0`); nothing of OxiGuitar's is on crates.io.
+Rust 1.99 or later from [rustup](https://rustup.rs). The plugin SDK comes from OxiGuitar's repository by git tag (`v0.23.0`); nothing of OxiGuitar's is on crates.io.
 
 ```sh
 cargo test          # unit tests, and the contract suite on the built .oxp file

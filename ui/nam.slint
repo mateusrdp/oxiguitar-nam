@@ -1,0 +1,145 @@
+// SPDX-License-Identifier: GPL-3.0-or-later
+// Copyright (C) 2026 Mateus Rocha de Paula and the OxiGuitar contributors
+
+// The Track tab's section "Amp (NAM)" (plugin interface 1.16): the amp on
+// or off, the model, the cabinet, the levels before and after, where the
+// models go, and a link to the manual. The plugin sets every property
+// (src/section.rs) and hears what the user changes.
+
+import { CheckBox, ComboBox, Palette, Slider } from "std-widgets.slint";
+
+component Level {
+    in property <string> title;
+    in-out property <float> value;
+    in property <float> minimum;
+    in property <float> maximum;
+    callback slid(float);
+    HorizontalLayout {
+        spacing: 8px;
+        Text {
+            text: root.title;
+            min-width: 56px;
+            vertical-alignment: center;
+        }
+        Slider {
+            minimum: root.minimum;
+            maximum: root.maximum;
+            value <=> root.value;
+            released(v) => { root.slid(v); }
+        }
+        Text {
+            text: (root.value >= 0 ? "+" : "") + round(root.value * 10) / 10 + " dB";
+            min-width: 60px;
+            horizontal-alignment: right;
+            vertical-alignment: center;
+            opacity: 0.7;
+        }
+    }
+}
+
+component Choice {
+    in property <string> title;
+    in property <[string]> options;
+    in-out property <int> picked;
+    in property <bool> enabled: true;
+    callback chosen(int);
+    HorizontalLayout {
+        spacing: 8px;
+        Text {
+            text: root.title;
+            min-width: 56px;
+            vertical-alignment: center;
+        }
+        ComboBox {
+            model: root.options;
+            current-index <=> root.picked;
+            enabled: root.enabled;
+            selected => { root.chosen(self.current-index); }
+        }
+    }
+}
+
+export component NamSection {
+    in-out property <bool> on;
+    in property <[string]> models;
+    in-out property <int> model;
+    in property <bool> can-pick-model;
+    in property <string> hint;
+    in property <[string]> cabinets;
+    in-out property <int> cabinet;
+    in-out property <float> input;
+    in-out property <float> output;
+    in property <float> minimum: -24;
+    in property <float> maximum: 24;
+    in property <bool> no-models;
+    in property <string> folder;
+    callback switched(bool);
+    callback model-chosen(int);
+    callback cabinet-chosen(int);
+    callback input-slid(float);
+    callback output-slid(float);
+    callback manual();
+
+    VerticalLayout {
+        spacing: 6px;
+        CheckBox {
+            text: "Play this track through an amp model";
+            checked <=> root.on;
+            toggled => { root.switched(self.checked); }
+        }
+        Choice {
+            title: "Model";
+            options: root.models;
+            picked <=> root.model;
+            enabled: root.can-pick-model;
+            chosen(i) => { root.model-chosen(i); }
+        }
+        if root.on: Text {
+            text: root.hint;
+            wrap: word-wrap;
+            opacity: 0.7;
+        }
+        Choice {
+            title: "Cabinet";
+            options: root.cabinets;
+            picked <=> root.cabinet;
+            chosen(i) => { root.cabinet-chosen(i); }
+        }
+        Level {
+            title: "Input";
+            value <=> root.input;
+            minimum: root.minimum;
+            maximum: root.maximum;
+            slid(v) => { root.input-slid(v); }
+        }
+        Level {
+            title: "Output";
+            value <=> root.output;
+            minimum: root.minimum;
+            maximum: root.maximum;
+            slid(v) => { root.output-slid(v); }
+        }
+        if root.no-models: Text {
+            text: "No amp models found yet.";
+        }
+        Text {
+            text: "Put .nam models and .wav cabinet responses in:";
+            wrap: word-wrap;
+            opacity: 0.7;
+        }
+        Text {
+            text: root.folder;
+            wrap: word-wrap;
+            opacity: 0.7;
+        }
+        link := Text {
+            text: "Amp models: where to get them, and a guitar sound for them";
+            wrap: word-wrap;
+            color: area.has-hover ? Palette.accent-background.darker(20%) : Palette.accent-background;
+            area := TouchArea {
+                mouse-cursor: pointer;
+                clicked => { root.manual(); }
+            }
+        }
+    }
+}
