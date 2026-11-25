@@ -4,7 +4,7 @@
 //! OxiGuitar's NAM plugin (plugin interface 1.5; M4 slice 6,
 //! docs/design/player.md): the effect `nam`, which plays a guitar or bass
 //! track through an amp model (a Neural Amp Modeler capture, `.nam`) and a
-//! cabinet impulse response, after its instrument; and the track dialog's
+//! cabinet impulse response, after its instrument; and the Track tab's
 //! section `nam`, where each track picks them.
 //!
 //! - `files` finds the models and responses in the `nam` folder (beside
@@ -27,13 +27,14 @@ use std::time::SystemTime;
 
 use oxiguitar_plugin::audio::PrepareEffect;
 use oxiguitar_plugin::{
-    Advice, Effect, Error, ErrorKind, Host, Link, Plugin, Processor, TrackSection, Update,
+    Advice, Effect, Error, ErrorKind, Host, Link, Plugin, Processor, Ui, Update,
 };
 
 #[cfg_attr(all(fast, not(test)), allow(dead_code))]
 pub(crate) mod convolve;
 pub mod engine;
 pub(crate) mod files;
+pub(crate) mod links;
 pub(crate) mod resample;
 pub(crate) mod section;
 pub(crate) mod settings;
@@ -44,7 +45,8 @@ use settings::{Cabinet, Track};
 /// The effect's id in the manifest.
 pub const EFFECT: &str = "nam";
 
-/// The track dialog's section's id in the manifest.
+/// The Track tab's section's id in the manifest: a view and a track
+/// section.
 pub const SECTION: &str = "nam";
 
 /// The manual's page on amp models, which the section links to.
@@ -238,8 +240,8 @@ impl Plugin for NamPlugin {
         (id == EFFECT).then_some(self as &dyn Effect)
     }
 
-    fn track_section(&self, id: &str) -> Option<&dyn TrackSection> {
-        (id == SECTION).then_some(&self.section as &dyn TrackSection)
+    fn ui(&self) -> Option<&dyn Ui> {
+        Some(&self.section)
     }
 }
 

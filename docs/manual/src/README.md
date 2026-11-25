@@ -2,7 +2,7 @@
 
 This plugin puts a real amplifier behind your guitar and bass tracks. A track plays its notes as a clean guitar, the plugin runs that sound through a capture of a real amp, then through a speaker cabinet, and what reaches your speakers sounds like a miked-up amp instead of a General MIDI guitar patch.
 
-The captures are **NAM profiles**, made with the open-source [Neural Amp Modeler](https://www.neuralampmodeler.com/). They are the same files that a growing number of professional pedals and amp modellers load. You pick one per track in the track dialog's **Amp (NAM)** section ([How to use it](use-cases.md) shows where), and get the files yourself: thousands are free to download. The plugin downloads nothing.
+The captures are **NAM profiles**, made with the open-source [Neural Amp Modeler](https://www.neuralampmodeler.com/). They are the same files that a growing number of professional pedals and amp modellers load. You pick one per track in the Track tab's **Amp (NAM)** section ([How to use it](use-cases.md) shows where), and get the files yourself: thousands are free to download. The plugin downloads nothing.
 
 This plugin needs the MIDI plugin, which makes the clean guitar sound that the amp shapes. See [its manual](https://mateusrdp.github.io/oxiguitar-midi/).
 
