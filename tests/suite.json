@@ -6,7 +6,7 @@
       "run": [
         "bash",
         "scripts/midi.sh",
-        "v0.2.4"
+        "v0.2.6"
       ],
       "needs": [
         "bash",
@@ -14,7 +14,7 @@
         "cargo"
       ],
       "env_from_stdout": "OXIGUITAR_MIDI_OXP",
-      "doc": "first, the MIDI plugin this one needs: `scripts/midi.sh v0.2.4` builds that release of oxiguitar-midi (the one CI's `MIDI_REF` names: the newest this plugin's OxiGuitar version can load)"
+      "doc": "first, the MIDI plugin this one needs: `scripts/midi.sh v0.2.6` builds that release of oxiguitar-midi and packs it as a plugin archive (the one CI's `MIDI_REF` names)"
     }
   ],
   "plugins": [
